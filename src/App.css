@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flexbox;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -7,13 +9,44 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+/* .ant-select {
+  width: 100%;
+  height: 50px;
+  background-color: #FEC317;
+}
+
+.ant-form-item-control-input-content {
+  height: 50px;
+}
+
+.ant-form-item-control-input {
+  height: 50px;
+}
+
+ant-select-selection-search-input {
+  height: 50px;
+}
+
+.ant-select-selection-search {
+  height: 50px;
+}
+
+.ant-select-in-form-item {
+  height: 50px;
+}
+
+.ant-select-selector {
+  height: 200px;
+} */
+
+
+/* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
+} */
 
-.App-header {
+/* .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -26,13 +59,14 @@
 
 .App-link {
   color: #61dafb;
-}
+} */
 
-@keyframes App-logo-spin {
+/* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
-}
+} */
+
