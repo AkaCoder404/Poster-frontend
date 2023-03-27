@@ -298,7 +298,7 @@ function RegisterPage() {
 
     const onFinish = (values) => {
         // Add ID
-        if (!formData.has('id') && uuid !== '') {
+        if (!formData.has('id')) {
             formData.append('id', uuid);
         }
 
@@ -427,7 +427,7 @@ function RegisterPage() {
     };
 
     const handleSubmitForm = async () => {
-        // setSubmitLoading(true);
+        setSubmitLoading(true);
         await axios.post('/api/upload/', formData).then((response) => {
 
             if (response.data.code !== 0) {
@@ -439,7 +439,7 @@ function RegisterPage() {
 
             // TODO: Redirect to success page
             setSubmitLoading(false);
-            navigate('/postersession/success?uuid=' + uuid);
+            navigate('/success?uuid=' + uuid);
         }).catch((error) => {
             console.log(error);
         });

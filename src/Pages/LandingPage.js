@@ -33,7 +33,7 @@ function LandingPage() {
     // Function after clicking the register button
     const onRegisterClick = () => {
         console.log("Register button clicked");
-        navigate("/postersession/register"); 
+        navigate("/register"); 
     }
 
     useEffect(() => {
