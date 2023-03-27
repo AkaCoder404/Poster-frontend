@@ -1,5 +1,5 @@
 import { Button, Steps, Form, Input, Select, Radio, Upload, Table, Popconfirm, message } from 'antd';
-import { ExclamationCircleOutlined, InboxOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined} from '@ant-design/icons';
 import { FaQuoteLeft } from 'react-icons/fa';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -100,6 +100,7 @@ function RegisterPage() {
 
     // const [formData, setFormData] = useState(new FormData());
     const [current, setCurrent] = useState(0);
+    // eslint-disable-next-line no-unused-vars
     const [submitLoading, setSubmitLoading] = useState(false);
 
     // Default recommendation letter files
@@ -122,6 +123,12 @@ function RegisterPage() {
         setDataSource(newData);
     };
 
+    const handleSend = (key) => {
+        const newData = dataSource.filter((item) => item.key === key);
+        console.log(newData)
+        // TODO: Send email to the professor
+    }
+
     const defaultColumns = [
         {
             title: 'Name',
@@ -137,17 +144,17 @@ function RegisterPage() {
         {
             title: 'Action',
             dataIndex: 'operation',
-           
+
             render: (_, record) =>
                 dataSource.length >= 1 ? (
                     <>
-                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-                        <Button style={{color: 'red', marginRight: "4px"}}> Delete </Button>
-                    </Popconfirm>
-                    <Popconfirm title="Sure to send?" onConfirm={() => handleDelete(record.key)}>
-                        <Button style={{color: 'blue'}}> Send Email </Button>
-                    </Popconfirm>
-                </>
+                        <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                            <Button size="small" style={{ color: 'red', marginRight: "4px" }}> Delete </Button>
+                        </Popconfirm>
+                        <Popconfirm title="Sure to send?" onConfirm={() => handleSend(record.key)}>
+                            <Button size="small" style={{ color: 'blue' }}> Send </Button>
+                        </Popconfirm>
+                    </>
                 ) : null,
         },
     ];
@@ -216,6 +223,12 @@ function RegisterPage() {
     }, [location.search]);
 
     const onFinish = (values) => {
+        // Add ID
+        if (formData.has('id')) {
+            formData.delete('id');
+        }
+        formData.append('id', '');
+
         // Check if formData already has the key, if so, delete it
         if ('familyName' in values) {
             if (formData.has('familyName')) {
@@ -305,6 +318,7 @@ function RegisterPage() {
         }
 
 
+
         for (const [key, value] of formData.entries()) {
             console.log(key, value);
         }
@@ -314,13 +328,20 @@ function RegisterPage() {
 
     let navigate = useNavigate();
 
+    // eslint-disable-next-line
     const config = {
-        headers: { 'Access-Control-Allow-Origin': '*' }
+        maxBodyLength: Infinity,
+        withCredentials: true,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'multipart/form-data',
+        },
+        
     };
 
     const handleSubmitForm = async () => {
         // setSubmitLoading(true);
-        await axios.post('http://localhost:10000/api/upload', formData, config).then((response) => {
+        await axios.post('http://icbs.cn/api/upload/', formData).then((response) => {
             console.log(response);
             // TODO: Redirect to success page
             setSubmitLoading(false);
@@ -355,6 +376,10 @@ function RegisterPage() {
     const onRecommendationChange = (info) => {
         console.log("onRecommdationChange", fileList);
         setRecommendationFileList([...info.fileList]);
+    }
+
+    const onPublicationDownload = (file) => {
+        console.log("Download file: " + file.name);
     }
 
     // eslint-disable-next-line
@@ -392,7 +417,10 @@ function RegisterPage() {
         var correctFormat = regex.test(file.name);
         var correctSize = file.size < 10000000;
 
+        return false;
+
         // Return a promise
+        // eslint-disable-next-line
         return new Promise((resolve, reject) => {
             if (!correctFormat) {
                 setFileList((state) => [...state]);
@@ -404,7 +432,8 @@ function RegisterPage() {
                 }
             }
             resolve();
-            return correctFormat && correctSize;
+            // return correctFormat && correctSize;
+            return false;
         });
     }
 
@@ -422,13 +451,13 @@ function RegisterPage() {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <Form.Item label="Family Name" name="familyname"
+                        <Form.Item label="Family Name" name="familyName"
                             rules={[{ required: true, message: 'Please input your family name!' }]}
                         >
                             <Input size="large" />
                         </Form.Item>
 
-                        <Form.Item label="First Name" name="firstname"
+                        <Form.Item label="First Name" name="firstName"
                             rules={[{ required: true, message: 'Please input your first name!' }]}
                         >
                             <Input size="large" />
@@ -558,15 +587,17 @@ function RegisterPage() {
                     <Form.Item label="CV and Publications" name="publications" rules={[{ required: true, message: 'Please upload your publications' }]}
                     >
                         <Dragger
+                            // action={}
                             name="file"
                             fileList={publicationFileList}
                             multiple
                             beforeUpload={beforeUpload}
                             onChange={onPublicationChange}
                             onRemove={onPublicationRemove}
+                            onDownload={onPublicationDownload}
                         >
                             {/* <Button>Select Files</Button> */}
-                            <p className="Dragger-Icon"><InboxOutlined /></p>
+                            {/* <p className="Dragger-Icon"><InboxOutlined /></p> */}
                             <p className="Dragger-Text">Click or drag file to this area to upload</p>
                         </Dragger>
                     </Form.Item>
@@ -590,32 +621,34 @@ function RegisterPage() {
                             <Button>Select Files</Button>
                         </Upload>
                     </Form.Item> */}
-                      <div className="RegisterPage-rightColumn-form-callout">
-                            <div className="callout-col"> 
+                    <div className="RegisterPage-rightColumn-form-callout">
+                        <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
                             <div className="callout-text"> Please add at least two recommenders of relevent fields. </div>
-                            </div>
+                        </div>
                     </div>
                     <Form.Item label="Recommendation Letters" name="recommendations">
-                        <Table
-                            components={components}
-                            rowClassName={() => 'editable-row'}
-                            bordered
-                            dataSource={dataSource}
-                            columns={columns}
-                            pagination={{ pageSize: 2 }}
-                            size="small"
-                            rows
-                        />
-                         <Button className="RegisterPage-rightColumn-form-addRecommenderButton"
-                            onClick={handleAdd}
-                            type="primary"
-                            style={{
-                                marginBottom: 16,
-                            }}
-                        >
-                            Add a recommender
-                        </Button>
+                        <>
+                            <Table
+                                components={components}
+                                rowClassName={() => 'editable-row'}
+                                bordered
+                                dataSource={dataSource}
+                                columns={columns}
+                                pagination={{ pageSize: 2 }}
+                                size="small"
+                                rows
+                            />
+                            <Button className="RegisterPage-rightColumn-form-addRecommenderButton"
+                                onClick={handleAdd}
+                                type="primary"
+                                style={{
+                                    marginBottom: 16,
+                                }}
+                            >
+                                Add a recommender
+                            </Button>
+                        </>
                     </Form.Item>
 
                     {/* <Form.Item>
@@ -648,7 +681,7 @@ function RegisterPage() {
                 >
                     <Form.Item label="Poster" name="posters" rules={[{ required: true, message: 'Please upload your poster' }]}
                     >
-                        <Upload
+                        {/* <Upload
                             name="file"
                             fileList={posterFileList}
                             multiple
@@ -658,7 +691,18 @@ function RegisterPage() {
                             maxCount={1}
                         >
                             <Button>Select Files</Button>
-                        </Upload>
+                        </Upload> */}
+                        <Dragger
+                            name="file"
+                            fileList={posterFileList}
+                            multiple
+                            beforeUpload={beforeUpload}
+                            onChange={onPosterChange}
+                            onRemove={onPosterRemove}
+                            maxCount={1}
+                        >
+                            <p className="Dragger-Text">Click or drag file to this area to upload</p>
+                        </Dragger>
                     </Form.Item>
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
@@ -672,7 +716,7 @@ function RegisterPage() {
                         </div>
                     </div>
 
-                    <Form.Item>
+                    {/* <Form.Item>
                         <Button className="RegisterPage-rightColumn-form-previousButton"
                             style={{ width: "48%", marginRight: "4%", }}
                             htmlType="button"
@@ -686,7 +730,7 @@ function RegisterPage() {
                             htmlType="Continue">
                             Submit
                         </Button>
-                    </Form.Item>
+                    </Form.Item> */}
                 </Form>
             </div>
         }
@@ -739,7 +783,7 @@ function RegisterPage() {
                         )}
                         {current === steps.length - 1 && (
                             <Button className="RegisterPage-rightColumn-form-completeButton" onClick={() => form.submit()} htmlType="submit">
-                                Done
+                                Submit
                             </Button>
                         )}
                     </div>

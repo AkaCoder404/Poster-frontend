@@ -1,0 +1,15 @@
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function(app) {
+    console.log("Setting up proxy middleware...");
+    app.use(
+        '/api',
+        createProxyMiddleware({
+        target: 'http://cloud.gutemorgan.com:10000/',
+        changeOrigin: true,
+        //   pathRewrite: {
+        //     '^/api': ''
+        //   }
+        })
+    );
+};
