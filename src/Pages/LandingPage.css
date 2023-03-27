@@ -145,10 +145,41 @@
 }
 
 .LandingPage-requirements {
-    /* display: flex;
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%; */
+    width: 100%;
     font-size: 19px;
+}
+
+.LandingPage-info-requirement {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px dotted #6AC3EB;
+    padding: 5px;
+    margin: 5px;
+    height: 250px;
+    width: 250px;
+}
+
+.LandingPage-info-requirement-icon {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LandingPage-info-requirement-title {
+    height: 60%;
+    font-size: medium;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -10px;
 }

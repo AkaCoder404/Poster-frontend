@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    min-width: 1200px;
 }
 
 .RegisterPage-leftColumn {
@@ -67,8 +68,25 @@
     margin-right: auto; 
     background-color: #2D3345;
     border-radius: 10px;
-    align-items: end;
 }
+
+.RegisterPage-leftColumn-innerBox-icon {
+    position: absolute;
+    top: -30px;
+    left: 3%;   
+}
+
+.RegisterPage-leftColumn-innerBox-text {
+    font-size: 20px;
+    margin-top: 80px;
+    margin-bottom: 35px;
+    color: #F3F5F9;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 
 .RegisterPage-rightColumn-box {
     height: 95%;
@@ -116,6 +134,7 @@
     color: #2D3345;
     font-size: 20px;
     font-weight: 800;
+    margin-top: 20px;
 }
 
 .RegisterPage-rightColumn-form-continueButton:hover {
@@ -158,10 +177,29 @@
     height: 100%;
 }
 
+.form2 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form3 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form4 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .ant-steps-item-finish
   > .ant-steps-item-container
   > .ant-steps-item-tail::after {
-  background-color: #2D3345 !important;
+        /* width:0px; */
+        background-color: #2D3345 !important;
 }
 
 .ant-steps-item-finish 
@@ -169,7 +207,9 @@
     > .ant-steps-item-icon
     > .ant-steps-icon
     > .ant-steps-icon-dot {
-    background-color: #2D3345 !important;
+        /* width: 80px; */
+        margin-right: -100px;
+        background-color: #2D3345 !important;
     }
 
 .ant-steps-item-active 
@@ -177,32 +217,83 @@
     > .ant-steps-item-icon
     > .ant-steps-icon
     > .ant-steps-icon-dot {
-    background-color: #2D3345 !important;
+        /* width: 80px; */
+        background-color: #2D3345 !important;
+}
+
+.ant-steps-item-active 
+    > .ant-steps-item-container
+    > .ant-steps-item-tail::after {
+        /* width:0px; */
+        background-color: #2D3345 !important;
+}
+
+.ant-steps-item-wait
+    > .ant-steps-item-container
+    > .ant-steps-item-icon
+    > .ant-steps-icon 
+    > .ant-steps-icon-dot {
+        padding: 0px;
+        /* width: 80px; */
+}
+
+.ant-steps-item-wait
+    > .ant-steps-item-container
+    > .ant-steps-item-tail {
+        /* width: 0px; */
+}
+
+
+.RegisterPage-steps {
+    width: 100%;
+    /* margin-left: -80px; */
 }
 
 
 .RegisterPage-rightColumn-form-callout {
+    height: 50px;
     width: 100%;
     margin-bottom: 15px;
     display: flex;
-    flex-direction: row;
+    flex-direction: col;
     background-color: #FFF9E7;
     border-radius: 10px;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+.callout-col {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
 }
 
 .callout-icon{
     font-size: 15px;
-    margin-top: 20px;
-    margin-bottom: 35px;
     color: #2D3345;
     margin-left: 25px;
 }
 
 .callout-text {
     font-size: 15px;
-    margin-top: 20px;
-    margin-bottom: 35px;
     margin-left: 12px;
     color: #2D3345;
-    width: 85%;
+    width: 100%;
+}
+
+.Dragger-Icon {
+    font-size: 35px;
+    color: #2D3345;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.RegisterPage-rightColumn-form-addRecommenderButton {
+    background-color: #2D3345;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
 }

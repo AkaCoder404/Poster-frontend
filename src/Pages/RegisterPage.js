@@ -1,23 +1,196 @@
-import { Button, Steps, Form, Input, Select, Radio, Upload, message } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Button, Steps, Form, Input, Select, Radio, Upload, Table, Popconfirm, message } from 'antd';
+import { ExclamationCircleOutlined, InboxOutlined } from '@ant-design/icons';
+import { FaQuoteLeft } from 'react-icons/fa';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
+
 import axios from 'axios';
 import './RegisterPage.css';
 
+const EditableContext = React.createContext(null);
+const EditableRow = ({ index, ...props }) => {
+    const [form] = Form.useForm();
+    return (
+        <Form form={form} component={false}>
+            <EditableContext.Provider value={form}>
+                <tr {...props} />
+            </EditableContext.Provider>
+        </Form>
+    );
+};
+const EditableCell = ({
+    title,
+    editable,
+    children,
+    dataIndex,
+    record,
+    handleSave,
+    ...restProps
+}) => {
+    const [editing, setEditing] = useState(false);
+    const inputRef = useRef(null);
+    const form = useContext(EditableContext);
+    useEffect(() => {
+        if (editing) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
+    const toggleEdit = () => {
+        setEditing(!editing);
+        form.setFieldsValue({
+            [dataIndex]: record[dataIndex],
+        });
+    };
+    const save = async () => {
+        try {
+            const values = await form.validateFields();
+            toggleEdit();
+            handleSave({
+                ...record,
+                ...values,
+            });
+        } catch (errInfo) {
+            console.log('Save failed:', errInfo);
+        }
+    };
+    let childNode = children;
+    if (editable) {
+        childNode = editing ? (
+            <Form.Item
+                style={{
+                    margin: 0,
+                }}
+                name={dataIndex}
+                rules={[
+                    {
+                        required: true,
+                        message: `${title} is required.`,
+                    },
+                ]}
+            >
+                <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+            </Form.Item>
+        ) : (
+            <div
+                className="editable-cell-value-wrap"
+                style={{
+                    paddingRight: 24,
+                }}
+                onClick={toggleEdit}
+            >
+                {children}
+            </div>
+        );
+    }
+    return <td {...restProps}>{childNode}</td>;
+};
+
 
 const { Option } = Select;
-// const { Dragger } = Upload;
+const { Dragger } = Upload;
 const formData = new FormData();
 function RegisterPage() {
+    const location = useLocation();
     const [form] = Form.useForm();
     const formRef = React.useRef(null);
     const [fileList, setFileList] = useState([]);
+    const [publicationFileList, setPublicationFileList] = useState([]);
+    const [recommendationFileList, setRecommendationFileList] = useState([]);
+    const [posterFileList, setPosterFileList] = useState([]);
+
     // const [formData, setFormData] = useState(new FormData());
     const [current, setCurrent] = useState(0);
+    const [submitLoading, setSubmitLoading] = useState(false);
 
+    // Default recommendation letter files
+    const [dataSource, setDataSource] = useState([
+        {
+            key: '0',
+            name: 'Edward King 0',
+            email: 'EdwardKing@gmail.com',
+        },
+        {
+            key: '1',
+            name: 'Edward King 1',
+            email: 'EdwardKing2@gmail.com',
+        },
+    ]);
+
+    const [count, setCount] = useState(2);
+    const handleDelete = (key) => {
+        const newData = dataSource.filter((item) => item.key !== key);
+        setDataSource(newData);
+    };
+
+    const defaultColumns = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            width: '40%',
+            editable: true,
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            width: '30%',
+        },
+        {
+            title: 'Action',
+            dataIndex: 'operation',
+           
+            render: (_, record) =>
+                dataSource.length >= 1 ? (
+                    <>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+                        <Button style={{color: 'red', marginRight: "4px"}}> Delete </Button>
+                    </Popconfirm>
+                    <Popconfirm title="Sure to send?" onConfirm={() => handleDelete(record.key)}>
+                        <Button style={{color: 'blue'}}> Send Email </Button>
+                    </Popconfirm>
+                </>
+                ) : null,
+        },
+    ];
+    const handleAdd = () => {
+        const newData = {
+            key: count,
+            name: `Professor ${count}`,
+            email: 'email@gmail.com'
+        };
+        setDataSource([...dataSource, newData]);
+        setCount(count + 1);
+    };
+    const handleSave = (row) => {
+        const newData = [...dataSource];
+        const index = newData.findIndex((item) => row.key === item.key);
+        const item = newData[index];
+        newData.splice(index, 1, {
+            ...item,
+            ...row,
+        });
+        setDataSource(newData);
+    };
+    const components = {
+        body: {
+            row: EditableRow,
+            cell: EditableCell,
+        },
+    };
+    const columns = defaultColumns.map((col) => {
+        if (!col.editable) {
+            return col;
+        }
+        return {
+            ...col,
+            onCell: (record) => ({
+                record,
+                editable: col.editable,
+                dataIndex: col.dataIndex,
+                title: col.title,
+                handleSave,
+            }),
+        };
+    });
 
     const next = () => {
         setCurrent(current + 1);
@@ -28,26 +201,35 @@ function RegisterPage() {
 
     useEffect(() => {
         console.log("Page Loaded");
-        const searchParams = new URLSearchParams(window.location.search);
-        console.log("Url Params: ", searchParams);
-    }, []);
+        const searchParams = new URLSearchParams(location.search);
+        console.log("Url Params: ", searchParams.get('uuid'));
+
+        // TODO: Check if uuid is valid
+
+        // TODO: Load previously submitted data from backend
+
+        // TODO: Disable form fields if data is already submitted
+
+        // TODO: Set publicationFileList, recommendationFileList, posterFileList
+
+
+    }, [location.search]);
 
     const onFinish = (values) => {
-        // console.log('Success:', values);
-        // if ('fullname' in values) console.log(values.fullname);
-        // if ('chinesename' in values) console.log(values.chinesename);
-        // if ('email' in values) console.log(values.email);
-        // if ('phone' in values) console.log(values.phone);
-        // if ('institution' in values) console.log(values.institution);
-        // if ('publication' in values) console.log(values.publications);
-        // if ('poster' in values) console.log(values.poster);
-
-        // TODO: Check if formData already has the key, if so, delete it
-        if ('fullname' in values) {
-            if (formData.has('fullname')) {
-                formData.delete('fullname');
+        // Check if formData already has the key, if so, delete it
+        if ('familyName' in values) {
+            if (formData.has('familyName')) {
+                formData.delete('familyName');
             }
-            formData.append('fullname', values.fullname);
+            formData.append('familyName', values.familyName);
+        }
+
+
+        if ('firstName' in values) {
+            if (formData.has('firstName')) {
+                formData.delete('firstName');
+            }
+            formData.append('firstName', values.firstName);
         }
 
         if ('chinesename' in values) {
@@ -99,14 +281,30 @@ function RegisterPage() {
         }
 
         console.log("Submitted Form...");
+        // Append files to formData
         for (let i = 0; i < fileList.length; i++) {
             formData.append('files', fileList[i].originFileObj);
             console.log(fileList[i].name);
         }
+        // console.log("submitted files count: ", fileList.length);
 
-        console.log("submitted files count: ", fileList.length);
 
- 
+        // Append publication files to formData
+        for (let i = 0; i < publicationFileList.length; i++) {
+            formData.append('publication_files', publicationFileList[i].originFileObj);
+        }
+
+        // Append recommendation files to formData
+        for (let i = 0; i < recommendationFileList.length; i++) {
+            formData.append('recommendation_files', recommendationFileList[i].originFileObj);
+        }
+
+        // Append poster files to formData
+        for (let i = 0; i < posterFileList.length; i++) {
+            formData.append('poster_files', posterFileList[i].originFileObj);
+        }
+
+
         for (const [key, value] of formData.entries()) {
             console.log(key, value);
         }
@@ -115,41 +313,76 @@ function RegisterPage() {
     };
 
     let navigate = useNavigate();
+
+    const config = {
+        headers: { 'Access-Control-Allow-Origin': '*' }
+    };
+
     const handleSubmitForm = async () => {
-        await axios.post('http://localhost:5000/api/register', formData).then((response) => {
+        // setSubmitLoading(true);
+        await axios.post('http://localhost:10000/api/upload', formData, config).then((response) => {
             console.log(response);
+            // TODO: Redirect to success page
+            setSubmitLoading(false);
+            navigate('/success');
         }).catch((error) => {
             console.log(error);
         });
-
-        // TODO: Redirect to success page
-        navigate('/success');
     }
-
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
-    const onChange = (info) => {
-        console.log("onChange", fileList);
-        setFileList([...info.fileList]);
+    // const onChange = (info) => {
+    //     console.log("onChange", fileList);
+    //     setFileList([...info.fileList]);
+    // }
 
-        // if (info.file.status !== 'uploading') {
-        //     console.log(info.file, info.fileList);
-        //   }
-        //   if (info.file.status === 'done') {
-        //     message.success(`${info.file.name} file uploaded successfully`);
-        //   } else if (info.file.status === 'error') {
-        //     message.error(`${info.file.name} file upload failed.`);
-        // }
+    // const onRemove = (file) => {
+    //     console.log("Removed file: " + file.name);
+    //     const index = fileList.indexOf(file);
+    //     const newFileList = fileList.slice();
+    //     newFileList.splice(index, 1);
+    //     setFileList(newFileList);
+    // }
+
+    const onPublicationChange = (info) => {
+        console.log("onPublicationChange", fileList);
+        setPublicationFileList([...info.fileList]);
     }
 
-    const onRemove = (file) => {
+    // eslint-disable-next-line
+    const onRecommendationChange = (info) => {
+        console.log("onRecommdationChange", fileList);
+        setRecommendationFileList([...info.fileList]);
+    }
+
+    // eslint-disable-next-line
+    const onPosterChange = (info) => {
+        console.log("onPosterChange", fileList);
+        setPosterFileList([...info.fileList]);
+    }
+
+    const onPublicationRemove = (file) => {
         console.log("Removed file: " + file.name);
-        const index = fileList.indexOf(file);
-        const newFileList = fileList.slice();
+    }
+
+    // eslint-disable-next-line
+    const onRecommendationRemove = (file) => {
+        console.log("Removed file: " + file.name);
+        const index = recommendationFileList.indexOf(file);
+        const newFileList = recommendationFileList.slice();
         newFileList.splice(index, 1);
-        setFileList(newFileList);
+        setRecommendationFileList(newFileList);
+    }
+
+    // eslint-disable-next-line
+    const onPosterRemove = (file) => {
+        console.log("Removed file: " + file.name);
+        const index = posterFileList.indexOf(file);
+        const newFileList = posterFileList.slice();
+        newFileList.splice(index, 1);
+        setPosterFileList(newFileList);
     }
 
     const beforeUpload = (file) => {
@@ -173,13 +406,11 @@ function RegisterPage() {
             resolve();
             return correctFormat && correctSize;
         });
-
     }
 
 
     const steps = [
         {
-            // title: 'First',
             content: <>
                 <div className="form1">
                     <Form
@@ -191,8 +422,14 @@ function RegisterPage() {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                     >
-                        <Form.Item label="Full Name" name="fullname"
-                            rules={[{ required: true, message: 'Please input your full name!' }]}
+                        <Form.Item label="Family Name" name="familyname"
+                            rules={[{ required: true, message: 'Please input your family name!' }]}
+                        >
+                            <Input size="large" />
+                        </Form.Item>
+
+                        <Form.Item label="First Name" name="firstname"
+                            rules={[{ required: true, message: 'Please input your first name!' }]}
                         >
                             <Input size="large" />
                         </Form.Item>
@@ -204,7 +441,7 @@ function RegisterPage() {
                         </Form.Item>
 
                         <Form.Item label="Email" name="email"
-                            rules={[{ required: true, message: 'Please input your email!', type: "email" },]}
+                            rules={[{ required: true, message: 'Please input a valid email!', type: "email" },]}
                         >
                             <Input size="large" />
                         </Form.Item>
@@ -214,11 +451,11 @@ function RegisterPage() {
                         >
                             <Input size="large" />
                         </Form.Item>
-                        <Form.Item >
+                        {/* <Form.Item >
                             <Button size="large" className="RegisterPage-rightColumn-form-continueButton" htmlType="Continue">
                                 Continue
                             </Button>
-                        </Form.Item>
+                        </Form.Item> */}
                     </Form>
                 </div>
             </>
@@ -261,44 +498,35 @@ function RegisterPage() {
                         >
                             <Select
                                 placeholder="Select your research area"
-                                // onChange={onGenderChange}
                                 size="large"
-                                // lineHeight="120px"
                                 allowClear
                             >
-                                <Option value="combinatorics">Combinatorics</Option>
-                                <Option value="discrete-geometry">Discrete Geometry</Option>
-                                <Option value="graph-theory">Graph theory</Option>
-                                <Option value="mathematical-logic">Mathematical Logic</Option>
-                                <Option value="foundations-and-category-theory">Foundations and Category Theory</Option>
-                                <Option value="number-theory">Number Theory</Option>
-                                <Option value="commutative-algebra-and-algebraic-geometry">Commutative Algebra and Algebraic Geometry</Option>
-                                <Option value="homological-algebra">Homological Algebra</Option>
-                                <Option value="k-theory-and-noncommutative-algebra">K-Theory and Noncommutative Algebra</Option>
-                                <Option value="one-and-several-complex-variables">One and Several Complex variables</Option>
-                                <Option value="complex-dynamical-syste">Complex Dynamical Syste</Option>
-                                <Option value="ordinary-differential-equations-and-special-functions">Ordinary Differential Equations and Special Functions</Option>
-                                <Option value="d-module">D Module</Option>
-                                <Option value="partial-differential-equations">Partial Differential Equations</Option>
-                                <Option value="dynamics-systems">Dynamics Systems</Option>
-                                <Option value="ergodic-theory-and-diophantine-approximation">Ergodic Theory and Diophantine Approximation</Option>
-                                <Option value="fourier-analysis-and-harmonic-analysis">Fourier Analysis and Harmonic Analysis</Option>
-                                <Option value="functional-analysis-and-operator-theory">Functional Analysis and Operator Theory</Option>
-                                <Option value="calculus-of-variations-and-optimal-control">Calculus of Variations and Optimal Control</Option>
-                                <Option value="general-relativity">General Relativity</Option>
-                                <Option value="geometric-analysis">Geometric Analysis</Option>
-                                <Option value="algebraic-and-geometric-topology">Algebraic and Geometric Topology</Option>
-                                <Option value="symplectic-and-differential-topology">Symplectic and Differential Topology</Option>
-                                <Option value="probability-theory-and-stochastic-processes">Probability Theory and Stochastic Processes</Option>
-                                <Option value="statistics">Statistics</Option>
-                                <Option value="numerical-analysis-and-scientific-computation">Numerical Analysis and Scientific Computation</Option>
-                                <Option value="differential-geometry">Differential Geometry</Option>
-                                <Option value="lie-theory-and-representation-theory">Lie Theory and Representation Theory</Option>
-                                <Option value="mathematics-of-string-theory-and-condensed-matter">Mathematics of String Theory and Condensed Matter</Option>
+                                <Option value="0">Combinatorics, Discrete Geometry, and Graph Theory </Option>
+                                <Option value="1">Mathematical Logic, Foundations, and Category Theory</Option>
+                                <Option value="2">Number Theory</Option>
+                                <Option value="3">Communtative Algebra and Algebraic Geometry</Option>
+                                <Option value="4">Homological Algebra, K-Theory, and Noncommutative Algebra</Option>
+                                <Option value="5">One and Several Variables Complex Dynamical Systems</Option>
+                                <Option value="6">Ordinary Differential Equations, Special Functions, and D-Module</Option>
+                                <Option value="7">Partial Differential Equations</Option>
+                                <Option value="8">Dynamics, Systems, Ergodic Theory and Diophantine Approximation</Option>
+                                <Option value="9">Fourier Analysis and Harmonic Analysis</Option>
+                                <Option value="10">Functional Analysis and Operator Theory</Option>
+                                <Option value="11">Calculus of Variations and Optimal Control</Option>
+                                <Option value="12">General Relativity</Option>
+                                <Option value="13">Geometric Analysis</Option>
+                                <Option value="14">Algebraic and Geometric Topology</Option>
+                                <Option value="15">Symplectic and Differential Topology</Option>
+                                <Option value="16">Probabiliy Theory and Stochasitc Processes</Option>
+                                <Option value="17">Statistics</Option>
+                                <Option value="18">Numerical Analysis and Scientific Computation</Option>
+                                <Option value="19">Differential Geometry</Option>
+                                <Option value="20">Lie Theory and Representation Theory</Option>
+                                <Option value="21">Mathematics of String Theory and Condensed Matter</Option>
                             </Select>
                         </Form.Item>
 
-                        <Form.Item>
+                        {/* <Form.Item>
                             <Button className="RegisterPage-rightColumn-form-previousButton"
                                 style={{ width: "48%", marginRight: "4%", }}
                                 htmlType="button"
@@ -311,7 +539,7 @@ function RegisterPage() {
                                 htmlType="Continue">
                                 Continue
                             </Button>
-                        </Form.Item>
+                        </Form.Item> */}
                     </Form>
                 </div>
             </>
@@ -327,38 +555,70 @@ function RegisterPage() {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    <Form.Item
-                        label="CV and Publications"
-                        name="publications"
-                        rules={[{ required: true, message: 'Please upload your CV and publications!' }]}
+                    <Form.Item label="CV and Publications" name="publications" rules={[{ required: true, message: 'Please upload your publications' }]}
                     >
-                        <Input />
+                        <Dragger
+                            name="file"
+                            fileList={publicationFileList}
+                            multiple
+                            beforeUpload={beforeUpload}
+                            onChange={onPublicationChange}
+                            onRemove={onPublicationRemove}
+                        >
+                            {/* <Button>Select Files</Button> */}
+                            <p className="Dragger-Icon"><InboxOutlined /></p>
+                            <p className="Dragger-Text">Click or drag file to this area to upload</p>
+                        </Dragger>
                     </Form.Item>
 
-                    <Form.Item
-                        label="Recommendation Letters"
-                        name="recommendations"
-                        rules={[{ required: true, message: 'Please input your recommendation letters!' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item label="Recommendation Letters" name="letters" rules={[{ required: true, message: 'Please input your recommendation letters!' }]}
+                    {/* <div className="RegisterPage-rightColumn-form-callout">
+                            <div className="callout-col"> 
+                            <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
+                            <div className="callout-text"> Please upload at least one recommendation letter. </div>
+                            </div>
+                    </div> */}
+                    {/* <Form.Item label="Recommendation Letters" name="recommendations" rules={[{ required: true, message: 'Please upload your recommendation letters!' }]}
                     >
                         <Upload
                             name="file"
-                            // showUploadList={false}
-                            fileList={fileList}
+                            fileList={recommendationFileList}
                             multiple
                             beforeUpload={beforeUpload}
-                            onChange={onChange}
-                            onRemove={onRemove}
+                            onChange={onRecommendationChange}
+                            onRemove={onRecommendationRemove}
                         >
                             <Button>Select Files</Button>
                         </Upload>
+                    </Form.Item> */}
+                      <div className="RegisterPage-rightColumn-form-callout">
+                            <div className="callout-col"> 
+                            <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
+                            <div className="callout-text"> Please add at least two recommenders of relevent fields. </div>
+                            </div>
+                    </div>
+                    <Form.Item label="Recommendation Letters" name="recommendations">
+                        <Table
+                            components={components}
+                            rowClassName={() => 'editable-row'}
+                            bordered
+                            dataSource={dataSource}
+                            columns={columns}
+                            pagination={{ pageSize: 2 }}
+                            size="small"
+                            rows
+                        />
+                         <Button className="RegisterPage-rightColumn-form-addRecommenderButton"
+                            onClick={handleAdd}
+                            type="primary"
+                            style={{
+                                marginBottom: 16,
+                            }}
+                        >
+                            Add a recommender
+                        </Button>
                     </Form.Item>
 
-                    <Form.Item>
+                    {/* <Form.Item>
                         <Button className="RegisterPage-rightColumn-form-previousButton"
                             style={{ width: "48%", marginRight: "4%", }}
                             htmlType="button"
@@ -371,7 +631,7 @@ function RegisterPage() {
                             htmlType="Continue">
                             Continue
                         </Button>
-                    </Form.Item>
+                    </Form.Item> */}
                 </Form>
             </div>
         },
@@ -386,14 +646,20 @@ function RegisterPage() {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    <Form.Item
-                        label="Poster"
-                        name="poster"
-                        rules={[{ required: true, message: 'Please input your publications' }]}
+                    <Form.Item label="Poster" name="posters" rules={[{ required: true, message: 'Please upload your poster' }]}
                     >
-                        <Input />
+                        <Upload
+                            name="file"
+                            fileList={posterFileList}
+                            multiple
+                            beforeUpload={beforeUpload}
+                            onChange={onPosterChange}
+                            onRemove={onPosterRemove}
+                            maxCount={1}
+                        >
+                            <Button>Select Files</Button>
+                        </Upload>
                     </Form.Item>
-
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
                         <div className="callout-text"> Please note application without Poster file or CV will be regarded as incomplete and will not be considered.
@@ -414,6 +680,7 @@ function RegisterPage() {
                             Back
                         </Button>
                         <Button className="RegisterPage-rightColumn-form-continueButton"
+                            loading={submitLoading}
                             type="primary"
                             style={{ width: "48%" }}
                             htmlType="Continue">
@@ -425,11 +692,15 @@ function RegisterPage() {
         }
     ];
 
-
     const items = steps.map((item) => ({
         key: item.title,
         title: item.title,
     }));
+
+    const faQuoteLeftStyle = {
+        color: "white",
+        fontSize: "70px"
+    }
 
     return (
         <div className="RegisterPage">
@@ -437,17 +708,21 @@ function RegisterPage() {
                 <div className="RegisterPage-leftColumn-box">
                     <div className="RegisterPage-leftColumn-title"> POSTER SESSION </div>
                     <div className="RegisterPage-leftColumn-text"> This is an opportunity for worldwide outstanding undergraduate and graduate students to display and introduce their recent works, to communicate and discuss with various fields of mathematicians and scholars.  </div>
-                    <div className="RegisterPage-leftColumn-innerBox">  </div>
+                    <div className="RegisterPage-leftColumn-innerBox">
+
+                        <div className="RegisterPage-leftColumn-innerBox-icon"> <FaQuoteLeft style={faQuoteLeftStyle} /> </div>
+                        <div className="RegisterPage-leftColumn-innerBox-text"> This is a quote. </div>
+                    </div>
                 </div>
             </div>
             <div className="RegisterPage-rightColumn">
                 <div className="RegisterPage-rightColumn-box">
-                    <div className="RegisterPage-rightColumn-title"> Applications </div>
+                    <div className="RegisterPage-rightColumn-title"> Application </div>
                     <div className="RegisterPage-rightColumn-subtitle"> Please fill in the following information </div>
                     <div className="RegisterPage-rightColumn-application">
                         {steps[current].content}
                     </div>
-                    {/* <div className="RegisterPage-rightColumn-form-buttons">
+                    <div className="RegisterPage-rightColumn-form-buttons">
                         {current > 0 && (
                             <Button className="RegisterPage-rightColumn-form-previousButton"
                                 onClick={() => prev()}
@@ -458,16 +733,16 @@ function RegisterPage() {
                         {current < steps.length - 1 && (
                             <Button className="RegisterPage-rightColumn-form-continueButton"
                                 style={{ width: current === 0 ? "100%" : "48%" }}
-                                onClick={onSubmit} htmlType="submit">
+                                onClick={() => form.submit()} htmlType="submit">
                                 Continue
                             </Button>
                         )}
                         {current === steps.length - 1 && (
-                            <Button className="RegisterPage-rightColumn-form-completeButton" onClick={onSubmit} htmlType="submit">
+                            <Button className="RegisterPage-rightColumn-form-completeButton" onClick={() => form.submit()} htmlType="submit">
                                 Done
                             </Button>
                         )}
-                    </div> */}
+                    </div>
                     <Steps className="RegisterPage-steps"
                         progressDot
                         // description={false}
@@ -478,5 +753,4 @@ function RegisterPage() {
         </div>
     );
 }
-
 export default RegisterPage;

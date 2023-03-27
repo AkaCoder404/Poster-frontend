@@ -1,0 +1,69 @@
+.RecommendationLetterPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.RecommendationLetterPage__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  width: 50%;
+  border-radius: 10px;
+  padding-left: 2%;
+  padding-right: 2%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  padding-top: 5%;
+  padding-bottom: 2%;
+}
+
+.RecommendationLetterPage__title {
+  font-size: 25px;
+  /* color: #f5f5f5; */
+  margin-bottom: 15px;
+}
+
+.RecommendationLetterPage__subtitle {
+  font-size: 13px;
+  text-align: center;
+  /* color: #f5f5f5; */
+  margin-bottom: 25px;
+  width: 70%;
+}
+
+.RecommendationLetterPage__form {
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%; */
+
+  width: 100%;
+}
+
+.RecommendationLetterPage__button {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.RecommendationLetterPage__submitButton {
+    width: 83%;
+    /* margin-bottom: -50px; */
+    /* background-color: #f5f5f5; */
+}
+
+.label {
+    font-size: 15px;
+    color: #f5f5f5;
+    margin-bottom: 5px;
+}

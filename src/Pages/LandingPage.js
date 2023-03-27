@@ -3,6 +3,10 @@ import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from 'antd';
 import cover from "../assets/images/cover_with_text2.png";
+import { FaSchool } from 'react-icons/fa';
+import { BiMath } from 'react-icons/bi';
+import { MdSchool } from 'react-icons/md';
+
 import './LandingPage.css';
 
 function formatTimeValue(value) {
@@ -10,8 +14,8 @@ function formatTimeValue(value) {
       return `0${value}`;
     } else {
       return value.toString();
-    }
   }
+}
 
 // const days = "00";
 // const hours = "00";
@@ -92,10 +96,15 @@ function LandingPage() {
   }, [days, hours, minutes, seconds]);
 
 
+    const requirementsIcon = {
+        marginTop: "40px",
+        fontSize: "50px",
+    }
+
     return (
         <div className="LandingPage">
             <div className="cover">
-                {/* <div className='cover-date'> March 27 - April 9 2023 </div>
+                {/* <div className='cover-date'> March 27 - April 9, 2023 </div>
                 <div className="cover-title"> POSTER SESSION </div>
                 <div className="cover-subtitle"> International Congress of Basic Science </div> */}
                 <img id="cover" src={cover} alt="cover" style={{ width: '100%' }} />
@@ -133,15 +142,25 @@ function LandingPage() {
             <div className="LandingPage-info">
                 <div className="LandingPage-info-subtitle"> Poster Session </div>
                 <div className="LandingPage-info-title"> ABOUT THE CONFERENCE </div>
-                <div className="LandingPage-info-text"> A half day poster session will be held during the inaugural International Congress of Basic Science (ICBS). This is an opportunity for worldwide outstanding undergraduate and graduate students to display and introduce their recent works, to communicate and discuss with various fields of mathematicians and scholars. The congress will provide up to 25000RMB economic airfare support and accommodation (shared room) for every successful applicant. </div>
+                <div className="LandingPage-info-text"> A half day poster session will be held during the inaugural International Congress of Basic Science (ICBS). This is an opportunity for outstanding undergraduate and graduate students worldwide to display and introduce their recent works, to communicate and discuss with various fields of mathematicians and scholars. The congress will provide up to 25000RMB economic airfare support and accommodation (shared room) for every successful applicant. </div>
             </div>
 
             <div className="LandingPage-requirement">
                 <div className="LandingPage-requirement-title"> REQUIREMENTS </div>
                 <div className='LandingPage-requirements'>
-                    <div className="LandingPage-info-requirement">  1. Major in Mathematics and its interdisciplinary subjects. </div>
-                    <div className="LandingPage-info-requirement">  2. Worldwide outstanding undergraduate and graduate students with affiliations. </div>
-                    <div className='LandingPage-info-requirement'>  3. Juvenile under 18 will not be considered.  </div>
+                    <div className="LandingPage-info-requirement">  
+                      <div className="LandingPage-info-requirement-icon"> <BiMath style={requirementsIcon}/> </div>
+                      <div className="LandingPage-info-requirement-title"> Major in Mathematics and its interdisciplinary subjects. </div>
+                    </div>
+                    <div className="LandingPage-info-requirement">  
+                      <div className="LandingPage-info-requirement-icon"> <FaSchool style={requirementsIcon}/> </div>
+                      <div className="LandingPage-info-requirement-title"> Worldwide outstanding undergraduate and graduate students with affiliations. </div>
+                     </div>
+
+                    <div className='LandingPage-info-requirement'>  
+                      <div className="LandingPage-info-requirement-icon"> <MdSchool style={requirementsIcon} /> </div>
+                      <div className="LandingPage-info-requirement-title"> Juvenile under 18 will not be considered. </div>
+                    </div>
                 </div>
             </div>
         </div>
