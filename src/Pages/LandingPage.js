@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from 'antd';
-import cover from "../assets/images/cover_with_text2.png";
+import cover from "../assets/images/cover_with_text3.png";
 import { FaSchool } from 'react-icons/fa';
 import { BiMath } from 'react-icons/bi';
 import { MdSchool } from 'react-icons/md';
@@ -33,7 +33,7 @@ function LandingPage() {
     // Function after clicking the register button
     const onRegisterClick = () => {
         console.log("Register button clicked");
-        navigate("/register"); 
+        navigate("/postersession/register"); 
     }
 
     useEffect(() => {
@@ -141,7 +141,7 @@ function LandingPage() {
 
             <div className="LandingPage-info">
                 <div className="LandingPage-info-subtitle"> Poster Session </div>
-                <div className="LandingPage-info-title"> ABOUT THE CONFERENCE </div>
+                <div className="LandingPage-info-title"> <div className="LandingPage-info-title-layout"><span style={{color: "#004DA6"}}>ABOUT</span>{'\u00A0'}THE POSTER SESSION </div></div>
                 <div className="LandingPage-info-text"> A half day poster session will be held during the inaugural International Congress of Basic Science (ICBS). This is an opportunity for outstanding undergraduate and graduate students worldwide to display and introduce their recent works, to communicate and discuss with various fields of mathematicians and scholars. The congress will provide up to 25000RMB economic airfare support and accommodation (shared room) for every successful applicant. </div>
             </div>
 

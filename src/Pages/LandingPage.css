@@ -115,6 +115,14 @@
     text-align: center;
 }
 
+.LandingPage-info-title-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .LandingPage-info-title {
     font-size: 35px;
     margin-bottom: 35px;

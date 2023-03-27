@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import { Button, Steps, Form, Input, Select, Radio, Upload, Table, Popconfirm, message } from 'antd';
-import { ExclamationCircleOutlined} from '@ant-design/icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { FaQuoteLeft } from 'react-icons/fa';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -18,6 +19,7 @@ const EditableRow = ({ index, ...props }) => {
         </Form>
     );
 };
+
 const EditableCell = ({
     title,
     editable,
@@ -91,15 +93,19 @@ const { Dragger } = Upload;
 const formData = new FormData();
 function RegisterPage() {
     const location = useLocation();
+    const [uuid, setUuid] = useState('');
     const [form] = Form.useForm();
     const formRef = React.useRef(null);
     const [fileList, setFileList] = useState([]);
     const [publicationFileList, setPublicationFileList] = useState([]);
+    const [publicationDefaultFileList, setPublicationDefaultFileList] = useState([]);
     const [recommendationFileList, setRecommendationFileList] = useState([]);
     const [posterFileList, setPosterFileList] = useState([]);
+    const [posterDefaultFileList, setPosterDefaultFileList] = useState([]);
 
     // const [formData, setFormData] = useState(new FormData());
     const [current, setCurrent] = useState(0);
+    const [dataLoaded, setDataLoaded] = useState(false);
     // eslint-disable-next-line no-unused-vars
     const [submitLoading, setSubmitLoading] = useState(false);
 
@@ -158,6 +164,7 @@ function RegisterPage() {
                 ) : null,
         },
     ];
+    // eslint-disable-next-line no-unused-vars
     const handleAdd = () => {
         const newData = {
             key: count,
@@ -177,12 +184,14 @@ function RegisterPage() {
         });
         setDataSource(newData);
     };
+    // eslint-disable-next-line no-unused-vars
     const components = {
         body: {
             row: EditableRow,
             cell: EditableCell,
         },
     };
+    // eslint-disable-next-line no-unused-vars
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
             return col;
@@ -206,28 +215,92 @@ function RegisterPage() {
         setCurrent(current - 1);
     };
 
+    // eslint-disable-next-line
+    const loadData = async (uuid) => {
+        console.log("Loading data from backend");
+        var data = { "id": uuid }
+
+        await axios.post('/api/info/', data).then((response) => {
+            if (response.data.code !== 0) {
+                message.error(response.data.message);
+                return;
+            }
+            message.success("Data loaded successfully");
+            console.log(response.data.data);
+
+            // TODO: Set form data
+            form.setFieldsValue({ "familyName": response.data.data.familyName });
+            form.setFieldsValue({ "firstName": response.data.data.firstName });
+            form.setFieldsValue({ "chinesename": response.data.data.chinesename });
+            form.setFieldsValue({ "email": response.data.data.email });
+            form.setFieldsValue({ "number": response.data.data.number });
+            form.setFieldsValue({ "institution": response.data.data.institution });
+            form.setFieldsValue({ "title": response.data.data.title });
+            form.setFieldsValue({ "research": response.data.data.research });
+            form.setFieldsValue({ "professorname": response.data.data.professorname });
+            form.setFieldsValue({ "professoremail": response.data.data.professoremail });
+
+            console.log(response.data.data.publication_files.split('/')[response.data.data.publication_files.split('/').length - 1])
+            console.log(response.data.data.poster_files.split('/')[response.data.data.poster_files.split('/').length - 1])
+            // TODO: Set file list
+
+            const defaultPublicationFileList = [
+                {
+                    uid: "0",
+                    name: response.data.data.publication_files.split('/')[response.data.data.publication_files.split('/').length - 1],
+                    status: 'done',
+                    response: "",
+                    url: response.data.data.publication_files
+                }
+            ];
+            setPublicationDefaultFileList(defaultPublicationFileList);
+            setPublicationFileList(defaultPublicationFileList);
+
+            const defaultPosterFileList = [
+                {
+                    uid: "0",
+                    name: response.data.data.poster_files.split('/')[response.data.data.poster_files.split('/').length - 1],
+                    status: 'done',
+                    response: "",
+                    url: response.data.data.poster_files
+                }
+            ];
+            setPosterDefaultFileList(defaultPosterFileList);
+            setPosterFileList(defaultPosterFileList);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // eslint-disable-next-line
     useEffect(() => {
         console.log("Page Loaded");
         const searchParams = new URLSearchParams(location.search);
         console.log("Url Params: ", searchParams.get('uuid'));
 
         // TODO: Check if uuid is valid
+        if (searchParams.get('uuid') !== null && dataLoaded === false) {
+            setDataLoaded(true);
+            setUuid(searchParams.get('uuid'));  
+            loadData(searchParams.get('uuid'));
+        } else {
+            // console.log("Invalid uuid");
+        }
 
         // TODO: Load previously submitted data from backend
 
         // TODO: Disable form fields if data is already submitted
 
         // TODO: Set publicationFileList, recommendationFileList, posterFileList
+    }, [location.search, dataLoaded, loadData]);
 
 
-    }, [location.search]);
 
     const onFinish = (values) => {
         // Add ID
-        if (formData.has('id')) {
-            formData.delete('id');
+        if (!formData.has('id') && uuid !== '') {
+            formData.append('id', uuid);
         }
-        formData.append('id', '');
 
         // Check if formData already has the key, if so, delete it
         if ('familyName' in values) {
@@ -259,11 +332,11 @@ function RegisterPage() {
             formData.append('email', values.email);
         }
 
-        if ('phone' in values) {
-            if (formData.has('phone')) {
-                formData.delete('phone');
+        if ('number' in values) {
+            if (formData.has('number')) {
+                formData.delete('number');
             }
-            formData.append('phone', values.phone);
+            formData.append('number', values.number);
         }
 
         if ('institution' in values) {
@@ -285,6 +358,20 @@ function RegisterPage() {
                 formData.delete('research');
             }
             formData.append('research', values.research);
+        }
+
+        if ('professorname' in values) {
+            if (formData.has('professorname')) {
+                formData.delete('professorname');
+            }
+            formData.append('professorname', values.professorname);
+        }
+
+        if ('professoremail' in values) {
+            if (formData.has('professoremail')) {
+                formData.delete('professoremail');
+            }
+            formData.append('professoremail', values.professoremail);
         }
 
         // 
@@ -336,16 +423,23 @@ function RegisterPage() {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'multipart/form-data',
         },
-        
+
     };
 
     const handleSubmitForm = async () => {
         // setSubmitLoading(true);
-        await axios.post('http://icbs.cn/api/upload/', formData).then((response) => {
+        await axios.post('/api/upload/', formData).then((response) => {
+
+            if (response.data.code !== 0) {
+                message.error(response.data.message);
+                return;
+            }
             console.log(response);
+            var uuid = response.data.uuid;
+
             // TODO: Redirect to success page
             setSubmitLoading(false);
-            navigate('/success');
+            navigate('/postersession/success?uuid=' + uuid);
         }).catch((error) => {
             console.log(error);
         });
@@ -584,11 +678,19 @@ function RegisterPage() {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    <Form.Item label="CV and Publications" name="publications" rules={[{ required: true, message: 'Please upload your publications' }]}
+                    <Form.Item label="CV and Publications" name="publications" rules={[{
+                        required: true, message: 'Please upload your publications', validator: (_, value) => {
+                            if (publicationFileList.length > 0) {
+                                return Promise.resolve();
+                            } else {
+                                return Promise.reject('Please upload an publication');
+                            }
+                        }
+                    }]}
                     >
                         <Dragger
-                            // action={}
                             name="file"
+                            defaultFileList={publicationDefaultFileList}
                             fileList={publicationFileList}
                             multiple
                             beforeUpload={beforeUpload}
@@ -602,12 +704,6 @@ function RegisterPage() {
                         </Dragger>
                     </Form.Item>
 
-                    {/* <div className="RegisterPage-rightColumn-form-callout">
-                            <div className="callout-col"> 
-                            <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
-                            <div className="callout-text"> Please upload at least one recommendation letter. </div>
-                            </div>
-                    </div> */}
                     {/* <Form.Item label="Recommendation Letters" name="recommendations" rules={[{ required: true, message: 'Please upload your recommendation letters!' }]}
                     >
                         <Upload
@@ -621,13 +717,29 @@ function RegisterPage() {
                             <Button>Select Files</Button>
                         </Upload>
                     </Form.Item> */}
+                    <Form.Item label="Referee" name="professorname"
+                        rules={[{ required: true, message: 'Please input referee name' }]}
+                    >
+                        <Input size="large" />
+                    </Form.Item>
+                    <Form.Item label="Email" name="professoremail"
+                        rules={[{ required: true, message: 'Please input referee email', type: 'email' }]}
+                    >
+                        <Input size="large" />
+                    </Form.Item>
                     <div className="RegisterPage-rightColumn-form-callout">
+                        <div className="callout-col">
+                            <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
+                            <div className="callout-text"> *Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter to <a href="mailto:ifbs@tsinghua.edu.cn">ifbs@tsinghua.edu.cn</a> before 24:00, 9th April, 2023（Beijing Time） </div>
+                        </div>
+                    </div>
+                    {/* <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
                             <div className="callout-text"> Please add at least two recommenders of relevent fields. </div>
                         </div>
-                    </div>
-                    <Form.Item label="Recommendation Letters" name="recommendations">
+                    </div> */}
+                    {/* <Form.Item label="Recommendation Letters" name="recommendations">
                         <>
                             <Table
                                 components={components}
@@ -649,7 +761,7 @@ function RegisterPage() {
                                 Add a recommender
                             </Button>
                         </>
-                    </Form.Item>
+                    </Form.Item> */}
 
                     {/* <Form.Item>
                         <Button className="RegisterPage-rightColumn-form-previousButton"
@@ -679,7 +791,15 @@ function RegisterPage() {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    <Form.Item label="Poster" name="posters" rules={[{ required: true, message: 'Please upload your poster' }]}
+                    <Form.Item label="Poster" name="posters" rules={[{
+                        required: true, message: 'Please upload your poster', validator: (_, value) => {
+                            if (posterFileList.length > 0) {
+                                return Promise.resolve();
+                            } else {
+                                return Promise.reject('Please upload an poster');
+                            }
+                        }
+                    }]}
                     >
                         {/* <Upload
                             name="file"
@@ -694,6 +814,7 @@ function RegisterPage() {
                         </Upload> */}
                         <Dragger
                             name="file"
+                            defaultFileList={posterDefaultFileList}
                             fileList={posterFileList}
                             multiple
                             beforeUpload={beforeUpload}

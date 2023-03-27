@@ -5,7 +5,7 @@ module.exports = function(app) {
     app.use(
         '/api',
         createProxyMiddleware({
-        target: 'http://cloud.gutemorgan.com:10000/',
+        target: 'http://icbs.cn',
         changeOrigin: true,
         //   pathRewrite: {
         //     '^/api': ''

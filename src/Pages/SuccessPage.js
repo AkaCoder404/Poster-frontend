@@ -1,10 +1,17 @@
 import { Button } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import "./SuccessPage.css"
 
 function SuccessPage() {
+    const location = useLocation();
+    // eslint-disable-next-line
+    const [currentUrl, setCurrentUrl] = useState(window.location.href);
+    const urlWithoutSuccess = currentUrl.replace('success', 'register');
+    // eslint-disable-next-line
+    const [uuid, setUuid] = React.useState(null);
 
     const successIconStyle = {
         fontSize: "65px",
@@ -19,16 +26,36 @@ function SuccessPage() {
     let navigate = useNavigate();
     const onReturnClick = () => {
         console.log("Return button clicked");
-        navigate("/");
+        navigate("/postersession");
     }
 
+
+    // eslint-disable-next-line
+    const loadData = (uuid) => {}
+
+    // eslint-disable-next-line
+    useEffect(() => {
+        console.log("Page Loaded");
+        const searchParams = new URLSearchParams(location.search);
+        console.log("Url Params: ", searchParams.get('uuid'));
+
+        // TODO: Check if uuid is valid
+        if (searchParams.get('uuid') !== null) {
+            loadData(searchParams.get('uuid'));
+            setUuid(searchParams.get('uuid'));
+        } else {
+            // TODO: Redirect to homepage
+            console.log("Invalid uuid");
+            navigate("/postersession");
+        }
+    }, [location.search, navigate, loadData]);
 
     return (
         <div className="SuccessPage">
            <div className="SuccessPage__content"> 
                 <div className="SuccessPage__icon"><CheckCircleFilled style={successIconStyle}/></div>
-                <div className="SuccessPage__title">Check your mailbox</div>
-                <div className="SuccessPage__subtitle"> We have sent a confirmation email for your application. Please check your spam box in case you can't find it in your inbox </div>
+                <div className="SuccessPage__title">Save this link!</div>
+                <div className="SuccessPage__subtitle"> Please save this <a href={urlWithoutSuccess}> this </a> link to review your application {urlWithoutSuccess} </div>
                 <Button className="SuccessPage__returnButton"
                     onClick={onReturnClick}> Return to homepage </Button>
            </div>

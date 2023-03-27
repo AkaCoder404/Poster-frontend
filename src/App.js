@@ -15,10 +15,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<LandingPage/>} />
-        <Route exact path="/register" element={<RegisterPage/>} />
-        <Route exact path="/success" element={<SuccessPage/>} />
-        <Route exact path="/recommendation" element={<RecommendationLetterPage/>} />
+        <Route exact path="/postersession" element={<LandingPage/>} />
+        <Route exact path="/postersession/register" element={<RegisterPage/>} />
+        <Route exact path="/postersession/success" element={<SuccessPage/>} />
+        <Route exact path="/postersession/recommendation" element={<RecommendationLetterPage/>} />
       </Routes>
     </Router>
 
