@@ -9,12 +9,13 @@ import SuccessPage from './Pages/SuccessPage.js';
 import RecommendationLetterPage from "./Pages/RecommendationLetterPage";
 
 
-import { BrowserRouter as Router, Route, Routes  } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate replace to="/postersession/" />} />
         <Route exact path="/postersession/" element={<LandingPage/>} />
         <Route exact path="/postersession/register" element={<RegisterPage/>} />
         <Route exact path="/postersession/success" element={<SuccessPage/>} />
