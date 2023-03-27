@@ -55,7 +55,7 @@ function SuccessPage() {
            <div className="SuccessPage__content"> 
                 <div className="SuccessPage__icon"><CheckCircleFilled style={successIconStyle}/></div>
                 <div className="SuccessPage__title">Save this link!</div>
-                <div className="SuccessPage__subtitle"> Please save this <a href={urlWithoutSuccess}> this </a> link to review your application {urlWithoutSuccess} </div>
+                <div className="SuccessPage__subtitle"> Please save <a href={urlWithoutSuccess} style={{color: "#FEC317"}}>this</a> link to review your application: <br/> {urlWithoutSuccess} </div>
                 <Button className="SuccessPage__returnButton"
                     onClick={onReturnClick}> Return to homepage </Button>
            </div>

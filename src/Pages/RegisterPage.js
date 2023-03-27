@@ -692,11 +692,12 @@ function RegisterPage() {
                             name="file"
                             defaultFileList={publicationDefaultFileList}
                             fileList={publicationFileList}
-                            multiple
+                            // multiple
                             beforeUpload={beforeUpload}
                             onChange={onPublicationChange}
                             onRemove={onPublicationRemove}
                             onDownload={onPublicationDownload}
+                            maxCount={1}
                         >
                             {/* <Button>Select Files</Button> */}
                             {/* <p className="Dragger-Icon"><InboxOutlined /></p> */}
@@ -816,7 +817,7 @@ function RegisterPage() {
                             name="file"
                             defaultFileList={posterDefaultFileList}
                             fileList={posterFileList}
-                            multiple
+                            // multiple
                             beforeUpload={beforeUpload}
                             onChange={onPosterChange}
                             onRemove={onPosterRemove}
