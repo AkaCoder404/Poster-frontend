@@ -325,6 +325,8 @@ function RegisterPage() {
             formData.append('chinesename', values.chinesename);
         }
 
+
+
         if ('email' in values) {
             if (formData.has('email')) {
                 formData.delete('email');
@@ -439,7 +441,7 @@ function RegisterPage() {
 
             // TODO: Redirect to success page
             setSubmitLoading(false);
-            navigate('/success?uuid=' + uuid);
+            navigate("/postersession/success?uuid=" + uuid);
         }).catch((error) => {
             console.log(error);
         });
@@ -562,6 +564,13 @@ function RegisterPage() {
                         >
                             <Input size="large" />
                         </Form.Item>
+
+                        <div className="RegisterPage-rightColumn-form-callout">
+                            <div className="callout-col">
+                                <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
+                                <div className="callout-text"> Please fill "none" if not applicable </div>
+                            </div>
+                        </div>
 
                         <Form.Item label="Email" name="email"
                             rules={[{ required: true, message: 'Please input a valid email!', type: "email" },]}
@@ -904,7 +913,9 @@ function RegisterPage() {
                             </Button>
                         )}
                         {current === steps.length - 1 && (
-                            <Button className="RegisterPage-rightColumn-form-completeButton" onClick={() => form.submit()} htmlType="submit">
+                            <Button className="RegisterPage-rightColumn-form-completeButton" 
+                                loading={submitLoading}
+                                onClick={() => form.submit()} htmlType="submit">
                                 Submit
                             </Button>
                         )}

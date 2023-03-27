@@ -199,7 +199,6 @@
 .ant-steps-item-finish
   > .ant-steps-item-container
   > .ant-steps-item-tail::after {
-        /* width:0px; */
         background-color: #2D3345 !important;
 }
 
@@ -208,7 +207,6 @@
     > .ant-steps-item-icon
     > .ant-steps-icon
     > .ant-steps-icon-dot {
-        /* width: 80px; */
         margin-right: -100px;
         background-color: #2D3345 !important;
     }
@@ -218,16 +216,14 @@
     > .ant-steps-item-icon
     > .ant-steps-icon
     > .ant-steps-icon-dot {
-        /* width: 80px; */
         background-color: #2D3345 !important;
 }
 
-.ant-steps-item-active 
+/* .ant-steps-item-active 
     > .ant-steps-item-container
     > .ant-steps-item-tail::after {
-        /* width:0px; */
         background-color: #2D3345 !important;
-}
+} */
 
 .ant-steps-item-wait
     > .ant-steps-item-container
@@ -261,7 +257,6 @@
     align-items: center;
     padding-top: 10px;
     padding-bottom: 10px;
-
 }
 
 .callout-col {
@@ -287,8 +282,8 @@
 .Dragger-Icon {
     font-size: 35px;
     color: #2D3345;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    /* margin-top: 0px;
+    margin-bottom: 0px; */
 }
 
 .RegisterPage-rightColumn-form-addRecommenderButton {
