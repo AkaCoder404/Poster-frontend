@@ -281,7 +281,7 @@ function RegisterPage() {
         // TODO: Check if uuid is valid
         if (searchParams.get('uuid') !== null && dataLoaded === false) {
             setDataLoaded(true);
-            setUuid(searchParams.get('uuid'));  
+            setUuid(searchParams.get('uuid'));
             loadData(searchParams.get('uuid'));
         } else {
             // console.log("Invalid uuid");
@@ -713,6 +713,12 @@ function RegisterPage() {
                             <p className="Dragger-Text">Click or drag file to this area to upload</p>
                         </Dragger>
                     </Form.Item>
+                    <div className="RegisterPage-rightColumn-form-callout">
+                        <div className="callout-col">
+                            <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
+                            <div className="callout-text"> Please upload only PDF or DOC files. </div>
+                        </div>
+                    </div>
 
                     {/* <Form.Item label="Recommendation Letters" name="recommendations" rules={[{ required: true, message: 'Please upload your recommendation letters!' }]}
                     >
@@ -727,12 +733,12 @@ function RegisterPage() {
                             <Button>Select Files</Button>
                         </Upload>
                     </Form.Item> */}
-                    <Form.Item label="Referee" name="professorname"
+                    <Form.Item label="Name of Referee" name="professorname"
                         rules={[{ required: true, message: 'Please input referee name' }]}
                     >
                         <Input size="large" />
                     </Form.Item>
-                    <Form.Item label="Email" name="professoremail"
+                    <Form.Item label="Email of Referee" name="professoremail"
                         rules={[{ required: true, message: 'Please input referee email', type: 'email' }]}
                     >
                         <Input size="large" />
@@ -740,7 +746,7 @@ function RegisterPage() {
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
-                            <div className="callout-text"> *Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter to <a href="mailto:ifbs@tsinghua.edu.cn">ifbs@tsinghua.edu.cn</a> before 24:00, 9th April, 2023（Beijing Time） </div>
+                            <div className="callout-text"> Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter to <a href="mailto:ifbs@tsinghua.edu.cn">ifbs@tsinghua.edu.cn</a> before 24:00, 9th April, 2023（Beijing Time） </div>
                         </div>
                     </div>
                     {/* <div className="RegisterPage-rightColumn-form-callout">
@@ -913,18 +919,24 @@ function RegisterPage() {
                             </Button>
                         )}
                         {current === steps.length - 1 && (
-                            <Button className="RegisterPage-rightColumn-form-completeButton" 
+                            <Button className="RegisterPage-rightColumn-form-completeButton"
                                 loading={submitLoading}
                                 onClick={() => form.submit()} htmlType="submit">
                                 Submit
                             </Button>
                         )}
                     </div>
-                    <Steps className="RegisterPage-steps"
-                        progressDot
-                        // description={false}
-                        current={current}
-                        items={items} />
+                    <div className="RegisterPage-steps-container">
+                        <Steps className="RegisterPage-steps"
+                            style={{}}
+                            progressDot
+                            responsive={false}
+                            direction='horizontal'
+                            // description={false}
+                            current={current}
+                            items={items} />
+                    </div>
+
                 </div>
             </div>
         </div>

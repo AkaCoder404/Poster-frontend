@@ -225,14 +225,14 @@
         background-color: #2D3345 !important;
 } */
 
-.ant-steps-item-wait
+/* .ant-steps-item-wait
     > .ant-steps-item-container
     > .ant-steps-item-icon
     > .ant-steps-icon 
     > .ant-steps-icon-dot {
         padding: 0px;
-        /* width: 80px; */
-}
+       
+} */
 
 /* .ant-steps-item-wait
     > .ant-steps-item-container
@@ -241,10 +241,9 @@
 }
  */
 
-.RegisterPage-steps {
-    width: 100%;
-    /* margin-left: -80px; */
-}
+/* .RegisterPage-steps {
+    width: 80%;
+} */
 
 .RegisterPage-rightColumn-form-callout {
     height: fit-content;
@@ -264,6 +263,7 @@
     flex-direction: row;
     align-items: center;
     height: 100%;
+    width: 100%;
 }
 
 .callout-icon{
@@ -292,3 +292,10 @@
     border: none;
     margin-top: 10px;
 }
+
+/* .RegisterPage-steps-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+} */
