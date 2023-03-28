@@ -102,6 +102,8 @@ function RegisterPage() {
     const [recommendationFileList, setRecommendationFileList] = useState([]);
     const [posterFileList, setPosterFileList] = useState([]);
     const [posterDefaultFileList, setPosterDefaultFileList] = useState([]);
+    const [studentcardFileList, setStudentcardFileList] = useState([]);
+    const [studentcardDefaultFileList, setStudentcardDefaultFileList] = useState([]);
 
     // const [formData, setFormData] = useState(new FormData());
     const [current, setCurrent] = useState(0);
@@ -217,7 +219,7 @@ function RegisterPage() {
 
     // eslint-disable-next-line
     const loadData = async (uuid) => {
-        console.log("Loading data from backend");
+        // console.log("Loading data from backend");
         var data = { "id": uuid }
 
         await axios.post('/api/info/', data).then((response) => {
@@ -240,8 +242,8 @@ function RegisterPage() {
             form.setFieldsValue({ "professorname": response.data.data.professorname });
             form.setFieldsValue({ "professoremail": response.data.data.professoremail });
 
-            console.log(response.data.data.publication_files.split('/')[response.data.data.publication_files.split('/').length - 1])
-            console.log(response.data.data.poster_files.split('/')[response.data.data.poster_files.split('/').length - 1])
+            // console.log(response.data.data.publication_files.split('/')[response.data.data.publication_files.split('/').length - 1])
+            // console.log(response.data.data.poster_files.split('/')[response.data.data.poster_files.split('/').length - 1])
             // TODO: Set file list
 
             const defaultPublicationFileList = [
@@ -267,6 +269,19 @@ function RegisterPage() {
             ];
             setPosterDefaultFileList(defaultPosterFileList);
             setPosterFileList(defaultPosterFileList);
+
+            const defaultStudentcardFileList = [
+                {
+                    uid: "0",
+                    name: response.data.data.studentcard_files.split('/')[response.data.data.studentcard_files.split('/').length - 1],
+                    status: 'done',
+                    response: "",
+                    url: response.data.data.studentcard_files
+                }
+            ];
+            setStudentcardDefaultFileList(defaultStudentcardFileList);
+            setStudentcardFileList(defaultStudentcardFileList);
+
         }).catch((error) => {
             console.log(error);
         });
@@ -274,9 +289,9 @@ function RegisterPage() {
 
     // eslint-disable-next-line
     useEffect(() => {
-        console.log("Page Loaded");
+        // console.log("Page Loaded");
         const searchParams = new URLSearchParams(location.search);
-        console.log("Url Params: ", searchParams.get('uuid'));
+        // console.log("Url Params: ", searchParams.get('uuid'));
 
         // TODO: Check if uuid is valid
         if (searchParams.get('uuid') !== null && dataLoaded === false) {
@@ -406,7 +421,10 @@ function RegisterPage() {
             formData.append('poster_files', posterFileList[i].originFileObj);
         }
 
-
+        // Append studentcard files to formData
+        for (let i = 0; i < studentcardFileList.length; i++) {
+            formData.append('studentcard_files', studentcardFileList[i].originFileObj);
+        }
 
         for (const [key, value] of formData.entries()) {
             console.log(key, value);
@@ -433,6 +451,7 @@ function RegisterPage() {
         await axios.post('/api/upload/', formData).then((response) => {
 
             if (response.data.code !== 0) {
+                setSubmitLoading(false);
                 message.error(response.data.message);
                 return;
             }
@@ -443,6 +462,8 @@ function RegisterPage() {
             setSubmitLoading(false);
             navigate("/postersession/success?uuid=" + uuid);
         }).catch((error) => {
+            setSubmitLoading(false);
+            message.error("Failed to submit form");
             console.log(error);
         });
     }
@@ -474,13 +495,32 @@ function RegisterPage() {
         setRecommendationFileList([...info.fileList]);
     }
 
+    // eslint-disable-next-line
     const onPublicationDownload = (file) => {
         console.log("Download file: " + file.name);
     }
 
+    const onStudentcardChange = (info) => {
+        console.log("onStudentcardChange", fileList);
+        setStudentcardFileList([...info.fileList]);
+    }
+
+    // eslint-disable-next-line
+    const onStudentcardDownload = (file) => {
+        console.log("Download file: " + file.name);
+    }
+
+    const onStudentcardRemove = (file) => {
+        console.log("Removed file: " + file.name);
+        const index = studentcardFileList.indexOf(file);
+        const newFileList = studentcardFileList.slice();
+        newFileList.splice(index, 1);
+        setStudentcardFileList(newFileList);
+    }
+
     // eslint-disable-next-line
     const onPosterChange = (info) => {
-        console.log("onPosterChange", fileList);
+        // console.log("onPosterChange", fileList);
         setPosterFileList([...info.fileList]);
     }
 
@@ -490,7 +530,7 @@ function RegisterPage() {
 
     // eslint-disable-next-line
     const onRecommendationRemove = (file) => {
-        console.log("Removed file: " + file.name);
+        // console.log("Removed file: " + file.name);
         const index = recommendationFileList.indexOf(file);
         const newFileList = recommendationFileList.slice();
         newFileList.splice(index, 1);
@@ -499,7 +539,7 @@ function RegisterPage() {
 
     // eslint-disable-next-line
     const onPosterRemove = (file) => {
-        console.log("Removed file: " + file.name);
+        // console.log("Removed file: " + file.name);
         const index = posterFileList.indexOf(file);
         const newFileList = posterFileList.slice();
         newFileList.splice(index, 1);
@@ -513,7 +553,10 @@ function RegisterPage() {
         var correctFormat = regex.test(file.name);
         var correctSize = file.size < 10000000;
 
-        return false;
+        // console.log("correctFormat: ", correctFormat);
+        // console.log("correctSize: ", correctSize);
+
+        // return false
 
         // Return a promise
         // eslint-disable-next-line
@@ -531,8 +574,39 @@ function RegisterPage() {
             // return correctFormat && correctSize;
             return false;
         });
+
+        // eslint-disable-next-line
+        return false;
     }
 
+    const beforeUploadStudentcard = (file) => {
+        // console.log("beforeUploadStudentcard", file);
+         const regex = new RegExp(/^.+\.(pdf|png|jpeg)$/);
+         var correctFormat = regex.test(file.name);
+         var correctSize = file.size < 10000000;
+
+         // return false
+ 
+         // Return a promise
+         // eslint-disable-next-line
+         return new Promise((resolve, reject) => {
+             if (!correctFormat) {
+                 setFileList((state) => [...state]);
+                 message.warning(`${file.name} is not PNG/JPEG/PDF file`);
+                 return false;
+             } else { // Test if file size is less than 10MB
+                 if (!correctSize) {
+                     message.warning(`${file.name} is too large`);
+                 }
+             }
+             resolve();
+             // return correctFormat && correctSize;
+             return false;
+         });
+ 
+         // eslint-disable-next-line
+         return false;
+    }
 
     const steps = [
         {
@@ -657,6 +731,27 @@ function RegisterPage() {
                                 <Option value="21">Mathematics of String Theory and Condensed Matter</Option>
                             </Select>
                         </Form.Item>
+                        <Form.Item label="Student Card" name="studentcard" rules={[{
+                            required: true, message: 'Please upload your student card', validator: (_, value) => {
+                                if (studentcardFileList.length > 0) {
+                                    return Promise.resolve();
+                                } else {
+                                    return Promise.reject('Please upload a pdf/png/jpeg file');
+                                }
+                            }
+                        }]}>
+                            <Dragger
+                                name="file"
+                                defaultFileList={studentcardDefaultFileList}
+                                fileList={studentcardFileList}
+                                beforeUpload={beforeUploadStudentcard}
+                                onChange={onStudentcardChange}
+                                onRemove={onStudentcardRemove}
+                                maxCount={1}
+                            >
+                                <p className="Dragger-Text">Please upload a pdf/png/jpeg file</p>
+                            </Dragger>
+                        </Form.Item>
 
                         {/* <Form.Item>
                             <Button className="RegisterPage-rightColumn-form-previousButton"
@@ -705,7 +800,6 @@ function RegisterPage() {
                             beforeUpload={beforeUpload}
                             onChange={onPublicationChange}
                             onRemove={onPublicationRemove}
-                            onDownload={onPublicationDownload}
                             maxCount={1}
                         >
                             {/* <Button>Select Files</Button> */}
@@ -716,23 +810,9 @@ function RegisterPage() {
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
-                            <div className="callout-text"> Please upload only PDF or DOC files. </div>
+                            <div className="callout-text"> Please upload only PDF or DOC/DOCX files. </div>
                         </div>
                     </div>
-
-                    {/* <Form.Item label="Recommendation Letters" name="recommendations" rules={[{ required: true, message: 'Please upload your recommendation letters!' }]}
-                    >
-                        <Upload
-                            name="file"
-                            fileList={recommendationFileList}
-                            multiple
-                            beforeUpload={beforeUpload}
-                            onChange={onRecommendationChange}
-                            onRemove={onRecommendationRemove}
-                        >
-                            <Button>Select Files</Button>
-                        </Upload>
-                    </Form.Item> */}
                     <Form.Item label="Name of Referee" name="professorname"
                         rules={[{ required: true, message: 'Please input referee name' }]}
                     >
@@ -817,17 +897,6 @@ function RegisterPage() {
                         }
                     }]}
                     >
-                        {/* <Upload
-                            name="file"
-                            fileList={posterFileList}
-                            multiple
-                            beforeUpload={beforeUpload}
-                            onChange={onPosterChange}
-                            onRemove={onPosterRemove}
-                            maxCount={1}
-                        >
-                            <Button>Select Files</Button>
-                        </Upload> */}
                         <Dragger
                             name="file"
                             defaultFileList={posterDefaultFileList}
