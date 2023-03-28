@@ -732,7 +732,7 @@ function RegisterPage() {
                             </Select>
                         </Form.Item>
                         <Form.Item label="Student Card" name="studentcard" rules={[{
-                            required: true, message: 'Please upload your student card', validator: (_, value) => {
+                            required: true, message: 'Please upload the photo or scan of your student card', validator: (_, value) => {
                                 if (studentcardFileList.length > 0) {
                                     return Promise.resolve();
                                 } else {
