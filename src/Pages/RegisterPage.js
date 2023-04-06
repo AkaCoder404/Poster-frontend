@@ -486,12 +486,13 @@ function RegisterPage() {
 
     const onPublicationChange = (info) => {
         console.log("onPublicationChange", fileList);
+        info.file.status = "success";
         setPublicationFileList([...info.fileList]);
     }
 
     // eslint-disable-next-line
     const onRecommendationChange = (info) => {
-        console.log("onRecommdationChange", fileList);
+        // console.log("onRecommdationChange", fileList);
         setRecommendationFileList([...info.fileList]);
     }
 
@@ -501,7 +502,8 @@ function RegisterPage() {
     }
 
     const onStudentcardChange = (info) => {
-        console.log("onStudentcardChange", fileList);
+        // console.log("onStudentcardChange", fileList);
+        info.file.status = "success";
         setStudentcardFileList([...info.fileList]);
     }
 
@@ -511,7 +513,7 @@ function RegisterPage() {
     }
 
     const onStudentcardRemove = (file) => {
-        console.log("Removed file: " + file.name);
+        // console.log("Removed file: " + file.name);
         const index = studentcardFileList.indexOf(file);
         const newFileList = studentcardFileList.slice();
         newFileList.splice(index, 1);
@@ -521,6 +523,7 @@ function RegisterPage() {
     // eslint-disable-next-line
     const onPosterChange = (info) => {
         // console.log("onPosterChange", fileList);
+        info.file.status = "success";
         setPosterFileList([...info.fileList]);
     }
 
@@ -747,7 +750,7 @@ function RegisterPage() {
                                 beforeUpload={beforeUploadStudentcard}
                                 onChange={onStudentcardChange}
                                 onRemove={onStudentcardRemove}
-                                maxCount={1}
+                                maxCount={1}      
                             >
                                 <p className="Dragger-Text">Please upload a pdf/png/jpeg file</p>
                             </Dragger>
