@@ -88,15 +88,16 @@
     margin-left: 20px;
     background-color: #FEC317;
     border-color: #FEC317;
+    border: none;
     color:#1F1F1F;
     font-weight: bold;
 }
-.countdown-button:hover {
+/* .countdown-button:hover {
     background-color: #FEC317;
     border-color: #FEC317;
     color: #FEC317;
     text-decoration: none;
-}
+} */
 
 .LandingPage-info {
     display: flex;

@@ -27,6 +27,8 @@ function LandingPage() {
     const [minutes, setMinutes] = React.useState("00");
     const [seconds, setSeconds] = React.useState("00");
 
+    const [isRegisterButtonEnabled, setIsRegisterButtonEnabled] = React.useState(true);
+
     let navigate = useNavigate();
     // Somewhere in your code, e.g. inside a handler:
   
@@ -38,7 +40,7 @@ function LandingPage() {
 
     useEffect(() => {
           // Calculate the time remaining until the target date
-    const targetDate = new Date("2023-04-09T00:00:00");
+    const targetDate = new Date("2023-04-10T00:00:00");
     const now = new Date();
     const timeDiff = targetDate.getTime() - now.getTime();
 
@@ -52,11 +54,25 @@ function LandingPage() {
     remainingTime -= remainingMinutes * 60;
     const remainingSeconds = Math.floor(remainingTime);
 
+
+    // Stop the interval when the countdown reaches zero
+    if (remainingDays < 0 || remainingHours < 0 || remainingMinutes < 0 || remainingSeconds < 0) {
+      // clearInterval(intervalId);
+      setIsRegisterButtonEnabled(false);
+      setDays(formatTimeValue(0));
+      setHours(formatTimeValue(0));
+      setMinutes(formatTimeValue(0));
+      setSeconds(formatTimeValue(0));
+      return;
+    }
+
     // Update the state variables with the new values
     setDays(formatTimeValue(remainingDays));
     setHours(formatTimeValue(remainingHours));
     setMinutes(formatTimeValue(remainingMinutes));
     setSeconds(formatTimeValue(remainingSeconds));
+
+   
 
     // Set up the interval to update the countdown every second
     const intervalId = setInterval(() => {
@@ -135,6 +151,7 @@ function LandingPage() {
                     // type="primary" 
                     size="large" 
                     className="countdown-button" 
+                    disabled={!isRegisterButtonEnabled}
                     onClick={onRegisterClick}>
                         REGISTER</Button>
             </div>
