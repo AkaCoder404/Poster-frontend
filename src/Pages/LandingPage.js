@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from 'antd';
-import cover from "../assets/images/cover_with_text3.png";
+import cover from "../assets/images/cover_with_text4.png";
 import { FaSchool } from 'react-icons/fa';
 import { BiMath } from 'react-icons/bi';
 import { MdSchool } from 'react-icons/md';
@@ -40,7 +40,7 @@ function LandingPage() {
 
     useEffect(() => {
           // Calculate the time remaining until the target date
-    const targetDate = new Date("2023-04-10T00:00:00");
+    const targetDate = new Date("2023-04-22T00:00:00");
     const now = new Date();
     const timeDiff = targetDate.getTime() - now.getTime();
 
