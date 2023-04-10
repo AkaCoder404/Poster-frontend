@@ -166,7 +166,10 @@ function LandingPage() {
         </Button>
       </div>
 
-      <div className="RegisterPage-rightColumn-form-callout" style={{alignContent: "center"}}>
+      <div
+        className="RegisterPage-rightColumn-form-callout"
+        style={{ alignContent: "center" }}
+      >
         <div className="callout-col">
           <div className="callout-icon">
             <ExclamationCircleOutlined />
@@ -188,21 +191,19 @@ function LandingPage() {
       <div className="LandingPage-info">
         <div className="LandingPage-info-subtitle"> Poster Session </div>
         <div className="LandingPage-info-title">
-          {" "}
           <div className="LandingPage-info-title-layout">
             <span style={{ color: "#004DA6" }}>ABOUT</span>
             {"\u00A0"}THE POSTER SESSION{" "}
           </div>
         </div>
         <div className="LandingPage-info-text">
-          {" "}
           A half day poster session will be held during the inaugural
           International Congress of Basic Science (ICBS). This is an opportunity
           for outstanding undergraduate and graduate students worldwide to
           display and introduce their recent works, to communicate and discuss
           with various fields of mathematicians and scholars. The congress will
           provide up to 25000RMB economic airfare support and accommodation
-          (shared room) for every successful applicant.{" "}
+          (shared room) for every successful applicant.
         </div>
       </div>
 
@@ -221,24 +222,20 @@ function LandingPage() {
           </div>
           <div className="LandingPage-info-requirement">
             <div className="LandingPage-info-requirement-icon">
-              {" "}
-              <FaSchool style={requirementsIcon} />{" "}
+              <FaSchool style={requirementsIcon} />
             </div>
             <div className="LandingPage-info-requirement-title">
-              {" "}
-              Worldwide outstanding undergraduate and graduate students with
-              affiliations.{" "}
+              Outstanding undergraduate and graduate students with affiliations
+              currently studying in China.
             </div>
           </div>
 
           <div className="LandingPage-info-requirement">
             <div className="LandingPage-info-requirement-icon">
-              {" "}
-              <MdSchool style={requirementsIcon} />{" "}
+              <MdSchool style={requirementsIcon} />
             </div>
             <div className="LandingPage-info-requirement-title">
-              {" "}
-              Juvenile under 18 will not be considered.{" "}
+              Juvenile under 18 will not be considered.
             </div>
           </div>
         </div>
