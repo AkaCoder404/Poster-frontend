@@ -693,7 +693,7 @@ function RegisterPage() {
                             <Radio.Group size="large" style={{ width: "100%" }} >
                                 <Radio value="undegraduate" size="large"
                                     style={{ border: "1px solid #D9D9D9", borderRadius: "5px", width: "46%", marginRight: "6%", paddingBottom: "15px", paddingTop: "15px", paddingLeft: "10px" }}
-                                > Undegraduate </Radio>
+                                > Undergraduate </Radio>
                                 <Radio value="postgraduate" size="large"
                                     style={{ border: "1px solid #D9D9D9", borderRadius: "5px", width: "46%", paddingBottom: "15px", paddingTop: "15px", paddingLeft: "10px" }}
                                 > Postgraduate </Radio>
@@ -718,7 +718,7 @@ function RegisterPage() {
                                 <Option value="5">One and Several Variables Complex Dynamical Systems</Option>
                                 <Option value="6">Ordinary Differential Equations, Special Functions, and D-Module</Option>
                                 <Option value="7">Partial Differential Equations</Option>
-                                <Option value="8">Dynamics, Systems, Ergodic Theory and Diophantine Approximation</Option>
+                                <Option value="8">Dynamical Systems, Ergodic Theory and Diophantine Approximation</Option>
                                 <Option value="9">Fourier Analysis and Harmonic Analysis</Option>
                                 <Option value="10">Functional Analysis and Operator Theory</Option>
                                 <Option value="11">Calculus of Variations and Optimal Control</Option>
