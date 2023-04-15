@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
-import cover from "../../assets/images/cover_with_text5.png";
+import cover from "../../assets/images/cover_with_text_phys.png";
 import { FaSchool } from "react-icons/fa";
 import { MdSchool } from "react-icons/md";
 import { ExclamationCircleOutlined, ExperimentOutlined } from "@ant-design/icons";
@@ -41,7 +41,7 @@ function LandingPage() {
 
   useEffect(() => {
     // Calculate the time remaining until the target date
-    const targetDate = new Date("2023-04-24T00:00:00");
+    const targetDate = new Date("2023-05-1T00:00:00");
     const now = new Date();
     const timeDiff = targetDate.getTime() - now.getTime();
 
@@ -165,7 +165,7 @@ function LandingPage() {
         </Button>
       </div>
 
-      <div
+      {/* <div
         className="RegisterPage-rightColumn-form-callout"
         style={{ alignContent: "center" }}
       >
@@ -179,7 +179,7 @@ function LandingPage() {
             students who have obtained a Chinese visa
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* <div className="LandingPage-notice">
         The registration deadline has been postponed to the 24:00, 23rd April,
