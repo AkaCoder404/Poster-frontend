@@ -2,11 +2,10 @@ import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
-import cover from "../assets/images/cover_with_text5.png";
+import cover from "../../assets/images/cover_with_text5.png";
 import { FaSchool } from "react-icons/fa";
-import { BiMath } from "react-icons/bi";
 import { MdSchool } from "react-icons/md";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined, ExperimentOutlined } from "@ant-design/icons";
 
 import "./LandingPage.css";
 
@@ -36,8 +35,8 @@ function LandingPage() {
 
   // Function after clicking the register button
   const onRegisterClick = () => {
-    console.log("Register button clicked");
-    navigate("/postersession/register");
+    // console.log("Register button clicked");
+    navigate("/poster-info-phys/register");
   };
 
   useEffect(() => {
@@ -193,7 +192,7 @@ function LandingPage() {
         <div className="LandingPage-info-title">
           <div className="LandingPage-info-title-layout">
             <span style={{ color: "#004DA6" }}>ABOUT</span>
-            {"\u00A0"}THE POSTER SESSION{" "}
+            {"\u00A0"}THE POSTER SESSION
           </div>
         </div>
         <div className="LandingPage-info-text">
@@ -201,8 +200,8 @@ function LandingPage() {
           International Congress of Basic Science (ICBS). This is an opportunity
           for outstanding undergraduate and graduate students worldwide to
           display and introduce their recent works, to communicate and discuss
-          with various fields of mathematicians and scholars. The congress will
-          provide up to 25000RMB economic airfare support and accommodation
+          with professors and scholars in Information Sciences or Physics. 
+          The congress will provide up to 25000RMB economic airfare support and accommodation
           (shared room) for every successful applicant.
         </div>
       </div>
@@ -212,12 +211,10 @@ function LandingPage() {
         <div className="LandingPage-requirements">
           <div className="LandingPage-info-requirement">
             <div className="LandingPage-info-requirement-icon">
-              {" "}
-              <BiMath style={requirementsIcon} />{" "}
+              <ExperimentOutlined style={requirementsIcon}/>
             </div>
             <div className="LandingPage-info-requirement-title">
-              {" "}
-              Major in Mathematics and its interdisciplinary subjects.{" "}
+              Major in Information Sciences or Physics.
             </div>
           </div>
           <div className="LandingPage-info-requirement">

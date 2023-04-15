@@ -1,0 +1,301 @@
+
+.RegisterPage {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-width: 1200px;
+}
+
+.RegisterPage-leftColumn {
+    height: 100%;
+    width: 45%;
+    /* background-color: #6AC3EB; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.RegisterPage-rightColumn {
+    height: 100%;
+    width: 55%;
+    /* background-color: #FEC317; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.RegisterPage-leftColumn-box {
+    height: 95%;
+    width: 90%;
+    background-color: #F3F5F9;
+    border-radius: 10px;
+    position: relative;
+    align-items: center;
+}
+
+.RegisterPage-leftColumn-title {
+    font-size: 80px;
+    margin-top: 80px;
+    font-weight: 600;
+    width: 300px;
+    margin-left: 30px;
+    letter-spacing: 10px;
+}
+
+.RegisterPage-leftColumn-text {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 35px;
+    color: #2D3345;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.RegisterPage-leftColumn-innerBox {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 20px;
+    height: 25%;
+    width: 90%;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    background-color: #2D3345;
+    border-radius: 10px;
+    visibility: hidden;
+}
+
+.RegisterPage-leftColumn-innerBox-icon {
+    position: absolute;
+    top: -30px;
+    left: 3%;   
+}
+
+.RegisterPage-leftColumn-innerBox-text {
+    font-size: 20px;
+    margin-top: 80px;
+    margin-bottom: 35px;
+    color: #F3F5F9;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.RegisterPage-rightColumn-box {
+    height: 95%;
+    width: 90%;
+    /* background-color: #F3F5F9; */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.RegisterPage-rightColumn-title {
+    font-size: 35px;
+    margin-top: 35px;
+    font-weight: 800;
+}
+
+.RegisterPage-rightColumn-subtitle {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 35px;
+    color: #2D3345;
+}
+
+.RegisterPage-rightColumn-application {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.RegisterPage-rightColumn-form-buttons {
+    width: 100%;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.RegisterPage-rightColumn-form-continueButton {
+    height: 90%;
+    width: 100%;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    border: none;
+    color: #2D3345;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 20px;
+}
+
+.RegisterPage-rightColumn-form-continueButton:hover {
+    text-decoration: none;
+    outline: none;
+}
+
+.RegisterPage-rightColumn-form-continueButton:focus {
+    text-decoration: none;
+    outline: none;
+}
+
+.RegisterPage-rightColumn-form-completeButton {
+    height: 90%;
+    width: 48%;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    border: none;
+    color: #2D3345;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 20px;
+}
+
+.RegisterPage-rightColumn-form-previousButton {
+    height: 90%;
+    width: 48%;
+    background-color: #FEC317;
+    border-radius: 10px;
+    border: none;
+    color: #2D3345;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 20px;
+}
+
+.form1 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form2 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form3 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.form4 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-tail::after {
+        background-color: #2D3345 !important;
+}
+
+.ant-steps-item-finish 
+    > .ant-steps-item-container
+    > .ant-steps-item-icon
+    > .ant-steps-icon
+    > .ant-steps-icon-dot {
+        margin-right: -100px;
+        background-color: #2D3345 !important;
+    }
+
+.ant-steps-item-active 
+    > .ant-steps-item-container
+    > .ant-steps-item-icon
+    > .ant-steps-icon
+    > .ant-steps-icon-dot {
+        background-color: #2D3345 !important;
+}
+
+/* .ant-steps-item-active 
+    > .ant-steps-item-container
+    > .ant-steps-item-tail::after {
+        background-color: #2D3345 !important;
+} */
+
+/* .ant-steps-item-wait
+    > .ant-steps-item-container
+    > .ant-steps-item-icon
+    > .ant-steps-icon 
+    > .ant-steps-icon-dot {
+        padding: 0px;
+       
+} */
+
+/* .ant-steps-item-wait
+    > .ant-steps-item-container
+    > .ant-steps-item-tail {
+      
+}
+ */
+
+/* .RegisterPage-steps {
+    width: 80%;
+} */
+
+.RegisterPage-rightColumn-form-callout {
+    height: fit-content;
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: col;
+    background-color: #FFF9E7;
+    border-radius: 10px;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.callout-col {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.callout-icon{
+    font-size: 15px;
+    color: #2D3345;
+    margin-left: 25px;
+}
+
+.callout-text {
+    font-size: 15px;
+    margin-left: 12px;
+    color: #2D3345;
+    width: 80%;
+}
+
+.Dragger-Icon {
+    font-size: 35px;
+    color: #2D3345;
+    /* margin-top: 0px;
+    margin-bottom: 0px; */
+}
+
+.RegisterPage-rightColumn-form-addRecommenderButton {
+    background-color: #2D3345;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+/* .RegisterPage-steps-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+} */

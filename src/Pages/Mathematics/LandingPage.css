@@ -1,0 +1,194 @@
+.LandingPage {
+    display: flex;
+    flex-direction: column;
+    min-width: 900px;
+}
+
+.cover {
+    background-color: #004DA6;
+    /* padding-top: 125px; */
+    /* position: relative; */
+}
+
+/* #cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+} */
+
+.cover-date {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+    top: 225px;
+}
+
+.cover-title {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    width: 100%;
+    text-align: center;
+    top: 275px;
+}
+
+.cover-subtitle {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    /* font-weight: bold; */
+    width: 100%;
+    text-align: center;
+    top: 340px;
+}
+
+.countdown {
+    margin-top: -5px;
+    height: 90px;
+    width: 100%;
+    background-color: #1F1F1F;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.countdown-divider {
+    height: 50%;
+    width: 1px;
+    background-color: #3F3F3F;
+}
+
+.countdown-time {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.countdown-timer {
+    color: #86E3F8;
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.countdown-label {
+    color: #A8A3A8;
+}
+
+.countdown-button {
+    margin-left: 20px;
+    background-color: #FEC317;
+    border-color: #FEC317;
+    border: none;
+    color:#1F1F1F;
+    font-weight: bold;
+}
+/* .countdown-button:hover {
+    background-color: #FEC317;
+    border-color: #FEC317;
+    color: #FEC317;
+    text-decoration: none;
+} */
+
+.LandingPage-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    margin-bottom: 100px;
+    width: 100%;
+}
+
+.LandingPage-info-subtitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 50px;
+    color: #6AC3EB;
+    text-align: center;
+}
+
+.LandingPage-info-title-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.LandingPage-info-title {
+    font-size: 35px;
+    margin-bottom: 35px;
+    letter-spacing: 12px;
+    text-align: center;
+}
+
+.LandingPage-info-text {
+    font-size: 19px;
+    text-align: center;
+    width: 65%;
+    color: #453E46;
+}
+
+.LandingPage-requirement {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:  100px;
+}
+
+.LandingPage-requirement-title {
+    font-size: 35px;
+    margin-bottom: 35px;
+    letter-spacing: 12px;
+    text-align: center;
+}
+
+.LandingPage-requirements {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 19px;
+}
+
+.LandingPage-info-requirement {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px dotted #6AC3EB;
+    padding: 5px;
+    margin: 5px;
+    height: 250px;
+    width: 250px;
+}
+
+.LandingPage-info-requirement-icon {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LandingPage-info-requirement-title {
+    height: 60%;
+    font-size: medium;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -10px;
+}
