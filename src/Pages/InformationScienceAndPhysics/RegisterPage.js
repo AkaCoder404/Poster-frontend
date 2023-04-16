@@ -222,7 +222,7 @@ function RegisterPage() {
         // console.log("Loading data from backend");
         var data = { "id": uuid }
 
-        await axios.post('/api/info/', data).then((response) => {
+        await axios.post('/api/info-phys/', data).then((response) => {
             if (response.data.code !== 0) {
                 message.error(response.data.message);
                 return;
@@ -448,7 +448,7 @@ function RegisterPage() {
 
     const handleSubmitForm = async () => {
         setSubmitLoading(true);
-        await axios.post('/api/upload/', formData).then((response) => {
+        await axios.post('/api/upload-phys/', formData).then((response) => {
 
             if (response.data.code !== 0) {
                 setSubmitLoading(false);
