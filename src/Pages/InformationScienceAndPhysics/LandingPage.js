@@ -5,7 +5,7 @@ import { Button } from "antd";
 import cover from "../../assets/images/cover_with_text_phys.png";
 import { FaSchool } from "react-icons/fa";
 import { MdSchool } from "react-icons/md";
-import { ExclamationCircleOutlined, ExperimentOutlined } from "@ant-design/icons";
+import { ExperimentOutlined } from "@ant-design/icons";
 
 import "./LandingPage.css";
 

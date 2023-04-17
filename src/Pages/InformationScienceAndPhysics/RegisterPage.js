@@ -700,6 +700,13 @@ function RegisterPage() {
                             </Radio.Group>
                         </Form.Item>
 
+                        <div className="RegisterPage-rightColumn-form-callout">
+                            <div className="callout-col">
+                                <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
+                                <div className="callout-text"> Choose from the top 10 fields for Information Sciences and last 4 fields for Physics. </div>
+                            </div>
+                        </div>
+
                         <Form.Item
                             name="research"
                             label="Research Area"
@@ -821,7 +828,7 @@ function RegisterPage() {
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
-                            <div className="callout-text"> Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter to <a href="mailto:ifbs@tsinghua.edu.cn">ifbs@tsinghua.edu.cn</a> before 24:00, 30th April, 2023 (Beijing Time) </div>
+                            <div className="callout-text"> Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter (Applicant “Name”+“IT”or“Physics”)  to <a href="mailto:icbs-poster@bimsa.cn">icbs-poster@bimsa.cn</a> before 24:00, 30th April, 2023 (Beijing Time) </div>
                         </div>
                     </div>
                     {/* <div className="RegisterPage-rightColumn-form-callout">
@@ -952,7 +959,7 @@ function RegisterPage() {
             <div className="RegisterPage-leftColumn">
                 <div className="RegisterPage-leftColumn-box">
                     <div className="RegisterPage-leftColumn-title"> POSTER SESSION </div>
-                    <div className="RegisterPage-leftColumn-text"> This is an opportunity for worldwide outstanding undergraduate and graduate students to display and introduce their recent works, to communicate and discuss with various fields of IT and scholars.  </div>
+                    <div className="RegisterPage-leftColumn-text"> This is an opportunity for worldwide outstanding undergraduate and graduate students to display and introduce their recent works, to communicate and discuss with professors and scholars in Information Sciences or Physics.  </div>
                     <div className="RegisterPage-leftColumn-innerBox">
 
                         <div className="RegisterPage-leftColumn-innerBox-icon"> <FaQuoteLeft style={faQuoteLeftStyle} /> </div>
