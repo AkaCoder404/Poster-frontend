@@ -703,7 +703,7 @@ function RegisterPage() {
                         <div className="RegisterPage-rightColumn-form-callout">
                             <div className="callout-col">
                                 <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
-                                <div className="callout-text"> Choose from the top 10 fields for Information Sciences and last 4 fields for Physics. </div>
+                                <div className="callout-text"> Choose from the top 10 fields for Information Sciences and last 2 fields for Physics. </div>
                             </div>
                         </div>
 
@@ -727,10 +727,13 @@ function RegisterPage() {
                                 <Option value="7">Bioinformatics</Option>
                                 <Option value="8">Computational Optics</Option>
                                 <Option value="9">Big Data Technology</Option>
-                                <Option value="10">Quantum Field Theory</Option>
+                                <Option value="10">Quantum gravity and Quantum field theory</Option>
+                                <Option value="11">Condensed Matter</Option>
+
+                                {/* <Option value="10">Quantum Field Theory</Option>
                                 <Option value="11">String Theory and Quantum Gravity</Option>
                                 <Option value="12">Condensed Matter</Option>
-                                <Option value="13">General Relativity and Quantum Cosmology</Option>
+                                <Option value="13">General Relativity and Quantum Cosmology</Option> */}
                             </Select>
                         </Form.Item>
                         <Form.Item label="Student Card" name="studentcard" rules={[{
