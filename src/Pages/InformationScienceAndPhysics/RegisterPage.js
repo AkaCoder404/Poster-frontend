@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import { Button, Steps, Form, Input, Select, Radio, Upload, Table, Popconfirm, message } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Steps, Form, Input, Select, Radio, Upload, Table, Popconfirm, message, Alert } from 'antd';
+import { CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { FaQuoteLeft } from 'react-icons/fa';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -104,6 +104,8 @@ function RegisterPage() {
     const [posterDefaultFileList, setPosterDefaultFileList] = useState([]);
     const [studentcardFileList, setStudentcardFileList] = useState([]);
     const [studentcardDefaultFileList, setStudentcardDefaultFileList] = useState([]);
+    const [isLoadedData, setIsLoadedData] = useState(false); // To check if the data is loaded vs the data is empty
+    
 
     // const [formData, setFormData] = useState(new FormData());
     const [current, setCurrent] = useState(0);
@@ -228,6 +230,7 @@ function RegisterPage() {
                 return;
             }
             message.success("Data loaded successfully");
+            setIsLoadedData(true);
             console.log(response.data.data);
 
             // TODO: Set form data
@@ -247,37 +250,37 @@ function RegisterPage() {
             // TODO: Set file list
 
             const defaultPublicationFileList = [
-                {
-                    uid: "0",
-                    name: response.data.data.publication_files.split('/')[response.data.data.publication_files.split('/').length - 1],
-                    status: 'done',
-                    response: "",
-                    url: response.data.data.publication_files
-                }
+                // {
+                //     uid: "0",
+                //     name: response.data.data.publication_files.split('/')[response.data.data.publication_files.split('/').length - 1],
+                //     status: 'done',
+                //     response: "",
+                //     url: response.data.data.publication_files
+                // }
             ];
             setPublicationDefaultFileList(defaultPublicationFileList);
             setPublicationFileList(defaultPublicationFileList);
 
             const defaultPosterFileList = [
-                {
-                    uid: "0",
-                    name: response.data.data.poster_files.split('/')[response.data.data.poster_files.split('/').length - 1],
-                    status: 'done',
-                    response: "",
-                    url: response.data.data.poster_files
-                }
+                // {
+                //     uid: "0",
+                //     name: response.data.data.poster_files.split('/')[response.data.data.poster_files.split('/').length - 1],
+                //     status: 'done',
+                //     response: "",
+                //     url: response.data.data.poster_files
+                // }
             ];
             setPosterDefaultFileList(defaultPosterFileList);
             setPosterFileList(defaultPosterFileList);
 
             const defaultStudentcardFileList = [
-                {
-                    uid: "0",
-                    name: response.data.data.studentcard_files.split('/')[response.data.data.studentcard_files.split('/').length - 1],
-                    status: 'done',
-                    response: "",
-                    url: response.data.data.studentcard_files
-                }
+                // {
+                //     uid: "0",
+                //     name: response.data.data.studentcard_files.split('/')[response.data.data.studentcard_files.split('/').length - 1],
+                //     status: 'done',
+                //     response: "",
+                //     url: response.data.data.studentcard_files
+                // }
             ];
             setStudentcardDefaultFileList(defaultStudentcardFileList);
             setStudentcardFileList(defaultStudentcardFileList);
@@ -738,7 +741,7 @@ function RegisterPage() {
                         </Form.Item>
                         <Form.Item label="Student Card" name="studentcard" rules={[{
                             required: true, message: 'Please upload the photo or scan of your student card', validator: (_, value) => {
-                                if (studentcardFileList.length > 0) {
+                                if (studentcardFileList.length > 0 || isLoadedData === true) {
                                     return Promise.resolve();
                                 } else {
                                     return Promise.reject('Please upload a pdf/png/jpeg file');
@@ -757,6 +760,16 @@ function RegisterPage() {
                                 <p className="Dragger-Text">Please upload a pdf/png/jpeg file</p>
                             </Dragger>
                         </Form.Item>
+                        
+                        { isLoadedData === true ? 
+                        <div className="RegisterPage-rightColumn-form-callout-success">
+                            <div className="callout-col">
+                                <div className="callout-icon"> <CheckCircleOutlined/> </div>
+                                <div className="callout-text"> Upload successful </div>
+                            </div>
+                        </div>
+                        : null
+                        }
 
                         {/* <Form.Item>
                             <Button className="RegisterPage-rightColumn-form-previousButton"
@@ -789,7 +802,7 @@ function RegisterPage() {
                 >
                     <Form.Item label="CV and Publications" name="publications" rules={[{
                         required: true, message: 'Please upload your publications', validator: (_, value) => {
-                            if (publicationFileList.length > 0) {
+                            if (publicationFileList.length > 0 || isLoadedData === true) {
                                 return Promise.resolve();
                             } else {
                                 return Promise.reject('Please upload an publication');
@@ -812,6 +825,17 @@ function RegisterPage() {
                             <p className="Dragger-Text">Click or drag file to this area to upload</p>
                         </Dragger>
                     </Form.Item>
+
+                    { isLoadedData === true ? 
+                        <div className="RegisterPage-rightColumn-form-callout-success">
+                            <div className="callout-col">
+                                <div className="callout-icon"> <CheckCircleOutlined/> </div>
+                                <div className="callout-text"> Upload successful </div>
+                            </div>
+                        </div>
+                        : null
+                    }
+
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
@@ -894,7 +918,7 @@ function RegisterPage() {
                 >
                     <Form.Item label="Poster" name="posters" rules={[{
                         required: true, message: 'Please upload your poster', validator: (_, value) => {
-                            if (posterFileList.length > 0) {
+                            if (posterFileList.length > 0 || isLoadedData === true) {
                                 return Promise.resolve();
                             } else {
                                 return Promise.reject('Please upload an poster');
@@ -915,6 +939,17 @@ function RegisterPage() {
                             <p className="Dragger-Text">Click or drag file to this area to upload</p>
                         </Dragger>
                     </Form.Item>
+
+                    { isLoadedData === true ? 
+                        <div className="RegisterPage-rightColumn-form-callout-success">
+                            <div className="callout-col">
+                                <div className="callout-icon"> <CheckCircleOutlined/> </div>
+                                <div className="callout-text"> Upload successful </div>
+                            </div>
+                        </div>
+                        : null
+                        }
+                        
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
                         <div className="callout-text"> Please note application without Poster file or CV will be regarded as incomplete and will not be considered.

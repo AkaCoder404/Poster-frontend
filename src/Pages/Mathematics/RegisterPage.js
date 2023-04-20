@@ -829,7 +829,7 @@ function RegisterPage() {
                     <div className="RegisterPage-rightColumn-form-callout">
                         <div className="callout-col">
                             <div className="callout-icon"> <ExclamationCircleOutlined /> </div>
-                            <div className="callout-text"> Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter to <a href="mailto:ifbs@tsinghua.edu.cn">ifbs@tsinghua.edu.cn</a> before 24:00, 9th April, 2023（Beijing Time） </div>
+                            <div className="callout-text"> Only one recommendation letter is required. Please use the above email of the referee to send your recommendation letter to <a href="mailto:ifbs@tsinghua.edu.cn">ifbs@tsinghua.edu.cn</a> before 24:00, 23rd April, 2023（Beijing Time） </div>
                         </div>
                     </div>
                     {/* <div className="RegisterPage-rightColumn-form-callout">
