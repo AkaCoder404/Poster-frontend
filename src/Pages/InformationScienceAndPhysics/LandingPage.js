@@ -41,7 +41,7 @@ function LandingPage() {
 
   useEffect(() => {
     // Calculate the time remaining until the target date
-    const targetDate = new Date("2023-05-01T00:00:00");
+    const targetDate = new Date("2023-05-15T00:00:00");
     const now = new Date();
     const timeDiff = targetDate.getTime() - now.getTime();
 
