@@ -1,9 +1,9 @@
 # Poster Session
 
-Frontend for poster session sign up page for the international congress of basic science. Built using react.
+Frontend for poster session sign up page for the International Congress of Basic Science. Built using react.
 
 ## Installation and Setup
-Use nvm and run nvm use
+Use nvm to set up environment
 ```
 nvm use
 ```
